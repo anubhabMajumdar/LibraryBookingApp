@@ -23,7 +23,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "name cannot have special characters" do
-    @user.name = "anubhab@"
+    @user.name = "anubhab@ majumdar"
     assert_not @user.valid?
   end
 
@@ -38,5 +38,19 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
+  test "email cannot be more than 100 characters" do
+    @user.email = ("a"*100 + "@blah.com")
+    assert_not @user.valid?
+  end
+
+  test "email should have proper semantics 1" do
+    @user.email = "@blah.com"
+    assert_not @user.valid?
+  end
+
+  test "email should have proper semantics 2" do
+    @user.email = "anubhab#majumdar@blah.com"
+    assert_not @user.valid?
+  end
 
 end
