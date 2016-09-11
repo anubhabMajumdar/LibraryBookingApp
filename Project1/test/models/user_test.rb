@@ -53,4 +53,9 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
+  test "email should have proper semantics 3" do
+    @user.email = "anubhab#majumdar@blah..com"
+    assert_not @user.valid?
+  end
+
 end
