@@ -1,9 +1,6 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
   def setup
     @user = User.new(name: "Anubhab Majumdar", email: "amajumd@ncsu.edu", Password_digest: "jhwxhjhwjxh247478", Admin: true)
   end
@@ -57,5 +54,12 @@ class UserTest < ActiveSupport::TestCase
     @user.email = "anubhab#majumdar@blah..com"
     assert_not @user.valid?
   end
+
+  test "email should be unique" do
+    user_copy = @user.dup
+    @user.save
+    assert_not user_copy.valid?
+  end
+
 
 end
