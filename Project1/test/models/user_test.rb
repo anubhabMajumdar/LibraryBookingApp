@@ -2,7 +2,11 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.new(name: "Anubhab Majumdar", email: "amajumd@ncsu.edu", Password_digest: "jhwxhjhwjxh247478", Admin: true)
+    @user = User.new(name: "Anubhab Majumdar",
+                     email: "amajumd@ncsu.edu",
+                     password: "blahblah93@",
+                     password_confirmation: "blahblah93@",
+                     Admin: true)
   end
 
   test "sanity check - should pass" do
@@ -59,6 +63,24 @@ class UserTest < ActiveSupport::TestCase
     user_copy = @user.dup
     @user.save
     assert_not user_copy.valid?
+  end
+
+  test "password should not be blank" do
+    @user.password = " "
+    @user.password_confirmation = " "
+    assert_not @user.valid?
+  end
+
+  test "password should have minimum length" do
+    @user.password = "anubh"
+    @user.password_confirmation = "anubh"
+    assert_not @user.valid?
+  end
+
+  test "password should have one number and one special character" do
+    @user.password = "anubhab"
+    @user.password_confirmation = "anubhab"
+    assert_not @user.valid?
   end
 
 
