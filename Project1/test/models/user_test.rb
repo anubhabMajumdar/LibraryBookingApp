@@ -17,4 +17,26 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
+  test "name cannot be more than 80 characters" do
+    @user.name = "a"*81
+    assert_not @user.valid?
+  end
+
+  test "name cannot have special characters" do
+    @user.name = "anubhab@"
+    assert_not @user.valid?
+  end
+
+  test "name cannot have numbers" do
+    @user.name = "anubhab92 majumdar"
+    assert_not @user.valid?
+  end
+
+
+  test "email cannot be blank" do
+    @user.email = " "
+    assert_not @user.valid?
+  end
+
+
 end
