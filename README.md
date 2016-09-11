@@ -19,6 +19,6 @@ edit users profile
 
 htan5@ncsu.edu
 
-book db
+(add, edit and query) book db
 
 some constraint (bonus part)
