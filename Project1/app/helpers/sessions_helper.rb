@@ -21,7 +21,7 @@ module SessionsHelper
     end
   end
 
-  def login_status?
+  def user_logged_in?
     if current_user
       true
     else

@@ -1,12 +1,11 @@
 class UsersController < ApplicationController
 
   def show
-    if login_status?
+    if user_logged_in?
       @user = User.find(session[:user_id])
     else
       redirect_to login_path
     end
-
   end
 
   def new
@@ -26,10 +25,30 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit
+    if user_logged_in?
+      @user = User.find(session[:user_id])
+
+    else
+      redirect_to login_path
+    end
+  end
+
+  def update
+    @user = User.find(session[:user_id])
+    if @user.update_attributes(allowed_params)
+      flash[:success] = "Update successful"
+      redirect_to user_url(@user)
+    else
+      render 'edit'
+    end
+  end
+
+
   private
 
     def allowed_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation, :Admin)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
 
 

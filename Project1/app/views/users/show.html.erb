@@ -1,8 +1,17 @@
 <!DOCTYPE html>
 <html>
-<body>
-<h2>
-    <%= @user.name %>, <%= @user.email %>
-</h2>
-</body>
+  <body>
+  <h2>
+    Welcome <%= @user.name %>
+  </h2>
+
+  <div class="row">
+    <div class="col-md-3 col-md-offset-3">
+      <li><%= link_to "Update profile", edit_user_url , method: "get" %></li>
+      <li><%= link_to "Add admin", "#" , method: "get" %></li>
+      <li><%= link_to "View admin", "#" , method: "get" %></li>
+      <li><%= link_to "Delete admin", "#" , method: "get" %></li>
+    </div>
+  </div>
+  </body>
 </html>
