@@ -5,7 +5,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to "Home",   '#' %></li>
         <li><%= link_to "Help",   '#' %></li>
-        <% if login_status?%>
+        <% if user_logged_in?%>
           <li><%= link_to "Logout", logout_path, method: "delete" %></li>
         <% else %>
             <li><%= link_to "Login", login_path, method: "get" %></li>
@@ -13,5 +13,4 @@
       </ul>
     </nav>
   </div>
-</header>
 </header>
