@@ -5,7 +5,11 @@
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to "Home",   '#' %></li>
         <li><%= link_to "Help",   '#' %></li>
-        <li><%= link_to "Log in", '#' %></li>
+        <% if login_status?%>
+          <li><%= link_to "Logout", logout_path, method: "delete" %></li>
+        <% else %>
+            <li><%= link_to "Login", login_path, method: "get" %></li>
+        <% end %>
       </ul>
     </nav>
   </div>

@@ -1,7 +1,12 @@
 class UsersController < ApplicationController
 
   def show
-    @user = User.find(params[:id])
+    if login_status?
+      @user = User.find(session[:user_id])
+    else
+      redirect_to login_path
+    end
+
   end
 
   def new
@@ -14,9 +19,10 @@ class UsersController < ApplicationController
     @user.Admin = false
     if @user.save
       flash[:success] = ("Registration successful " + @user.name)
+      logging_in(@user.id)
       redirect_to user_url(@user)
     else
-      render 'users/new'
+      render 'new'
     end
   end
 
