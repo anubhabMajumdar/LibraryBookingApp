@@ -17,4 +17,8 @@ class User < ApplicationRecord
 
   has_secure_password
 
+  def self.get_admins
+    @all_users = User.where(Admin: true).all
+  end
+
 end

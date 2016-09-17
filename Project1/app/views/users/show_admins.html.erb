@@ -1,0 +1,15 @@
+<h1>Admins</h1>
+<body>
+<ul class="list-group">
+   <% @all_admins.each do |each_user| %>
+      <li class="list-group-item">
+          <%= each_user.name %>&nbsp&nbsp&nbsp&nbsp
+          <%= each_user.email %>&nbsp&nbsp&nbsp&nbsp
+          <%= link_to "Remove as admin", "#" , method: "get" %>
+      </li>
+  <% end %>
+</ul>
+</body>
+
+
+

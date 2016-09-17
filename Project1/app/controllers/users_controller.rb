@@ -44,6 +44,9 @@ class UsersController < ApplicationController
     end
   end
 
+  def show_admins
+    @all_admins = User.get_admins
+  end
 
   private
 
