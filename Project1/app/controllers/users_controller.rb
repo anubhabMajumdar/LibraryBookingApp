@@ -45,8 +45,31 @@ class UsersController < ApplicationController
   end
 
   def show_admins
-    @all_admins = User.get_admins
+    if user_logged_in?
+      @all_admins = User.get_admins
+    else
+      redirect_to login_path
+    end
   end
+
+  def add_admin
+    @admin_user = User.new
+  end
+
+  def search_admin
+    # debugger
+    @user_search = User.where(return_email).all
+    if @user_search[0]!=nil
+      flash.now[:success] = "#{@user_search[0].email} matched"
+      @search_result = @user_search[0]
+      @admin_user = @user_search[0]
+    else
+      flash.now[:danger] = "Email not found"
+      @admin_user = User.new
+    end
+    render 'add_admin'
+  end
+
 
   private
 
@@ -54,5 +77,8 @@ class UsersController < ApplicationController
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
 
+    def return_email
+      params.require(:user).permit(:email)
+    end
 
 end

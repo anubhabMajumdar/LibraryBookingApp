@@ -21,4 +21,5 @@ class User < ApplicationRecord
     @all_users = User.where(Admin: true).all
   end
 
+
 end

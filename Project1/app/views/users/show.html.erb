@@ -8,7 +8,7 @@
   <ul class="list-group">
     <li class="list-group-item"><%= link_to "Update profile", edit_user_url , method: "get" %></li>
     <% if @user.Admin%>
-      <li class="list-group-item"><%= link_to "Add admin", "#" , method: "get" %></li>
+      <li class="list-group-item"><%= link_to "Add admin", add_admin_url, method: "get" %></li>
       <li class="list-group-item"><%= link_to "View admins", show_admins_url , method: "get" %></li>
       <li class="list-group-item"><%= link_to "Delete admin", "#" , method: "get" %></li>
     <%end%>
