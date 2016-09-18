@@ -1,0 +1,41 @@
+controller name:rooms
+class RoomController
+
+resources :rooms
+
+model name: room
+class: Room
+
+data table: rooms
+id, roomid, building, size
+
+
+rails generate scaffold user room_id:string building:string size:string
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
