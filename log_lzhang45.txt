@@ -10,7 +10,7 @@ data table: rooms
 id, roomid, building, size
 
 
-rails generate scaffold user room_id:string building:string size:string
+rails generate scaffold room room_id:string building:string size:string
 
 
 
