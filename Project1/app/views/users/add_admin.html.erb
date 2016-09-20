@@ -19,7 +19,7 @@
         <li class="list-group-item">
           <%= @search_result.name %>&nbsp&nbsp&nbsp&nbsp
           <%= @search_result.email %>&nbsp&nbsp&nbsp&nbsp
-          <%= link_to "Make admin", "#" , method: "get" %>
+          <%= link_to "Make admin", make_admin_url(:email => @search_result.email) , method: "post" %>
         </li>
     <%end%>
   </ul>

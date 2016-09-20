@@ -1,5 +1,17 @@
 module SessionsHelper
 
+  def match_session_id(inpid)
+    if user_logged_in?
+      if inpid == session[:user_id]
+        true
+      else
+        false
+      end
+    else
+      false
+    end
+  end
+
   def logging_in(used_id)
     session[:user_id] = used_id
   end

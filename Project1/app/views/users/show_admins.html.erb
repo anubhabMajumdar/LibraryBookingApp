@@ -5,7 +5,9 @@
       <li class="list-group-item">
           <%= each_user.name %>&nbsp&nbsp&nbsp&nbsp
           <%= each_user.email %>&nbsp&nbsp&nbsp&nbsp
-          <%= link_to "Remove as admin", "#" , method: "get" %>
+        <% if each_user.id != 1 && !match_session_id(each_user.id)%>
+            <%= link_to "Remove as admin", remove_admin_url(:email => each_user.email) , method: "post" %>
+        <%end%>
       </li>
   <% end %>
 </ul>

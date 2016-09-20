@@ -70,6 +70,34 @@ class UsersController < ApplicationController
     render 'add_admin'
   end
 
+  def make_admin
+    # debugger
+    @user_for_admin = User.find_by(email: params[:email])
+    if @user_for_admin.Admin
+      flash.now[:danger] = "#{@user_for_admin.name} already an admin"
+    else
+      # @user_for_admin.Admin = true
+      if @user_for_admin.update_attribute(:Admin, true)
+        flash.now[:success] = "#{@user_for_admin.name} successfully added as admin"
+      else
+        flash.now[:danger] = "Cannot be added as admin. Please try again"
+      end
+    end
+    @admin_user = User.new
+    render  'add_admin'
+  end
+
+  def remove_admin
+    # debugger
+    @user_for_admin = User.find_by(email: params[:email])
+    if @user_for_admin.update_attribute(:Admin, false)
+        flash.now[:success] = "#{@user_for_admin.name} successfully removed as admin"
+      else
+        flash.now[:danger] = "Cannot be removed as admin. Please try again"
+    end
+    @all_admins = User.get_admins
+    render  'show_admins'
+  end
 
   private
 
@@ -80,5 +108,6 @@ class UsersController < ApplicationController
     def return_email
       params.require(:user).permit(:email)
     end
+
 
 end

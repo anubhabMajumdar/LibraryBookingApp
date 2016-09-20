@@ -19,5 +19,6 @@ Rails.application.routes.draw do
   get   '/search_admin',    to: 'users#search_admin'
   patch   '/search_admin',    to: 'users#search_admin'
   post     '/search_admin',    to: 'users#search_admin'
-
+  post     '/make_admin',        to: 'users#make_admin'
+  post     '/remove_admin',        to: 'users#remove_admin'
 end

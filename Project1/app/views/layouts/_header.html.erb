@@ -5,7 +5,9 @@
     <%= link_to "Library Booking App", '#', id: "logo" %>
     <nav>
       <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to "Home",   '#' %></li>
+        <% if user_logged_in?%>
+          <li><%= link_to "Home",   user_path(session[:user_id]) %></li>
+        <% end %>
         <li><%= link_to "Help",   '#' %></li>
         <% if user_logged_in?%>
           <li><%= link_to "Logout", logout_path, method: "delete" %></li>
