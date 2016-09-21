@@ -22,4 +22,6 @@ Rails.application.routes.draw do
   post     '/search_admin',    to: 'users#search_admin'
   post     '/make_admin',        to: 'users#make_admin'
   post     '/remove_admin',        to: 'users#remove_admin'
+  get      '/admin_manage_room',    to: 'users#admin_manage_room'
+
 end

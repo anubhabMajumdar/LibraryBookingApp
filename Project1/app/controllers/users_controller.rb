@@ -99,6 +99,10 @@ class UsersController < ApplicationController
     render  'show_admins'
   end
 
+  def admin_manage_room
+
+  end
+
   private
 
     def allowed_params
