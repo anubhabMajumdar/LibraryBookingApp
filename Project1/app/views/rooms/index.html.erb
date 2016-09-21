@@ -9,15 +9,14 @@
         <li class="list-group-item">
           <%= room.room_id %>&nbsp&nbsp&nbsp&nbsp
           <%= room.building %>&nbsp&nbsp&nbsp&nbsp
-          <%= link_to 'Show', room %>&nbsp&nbsp&nbsp&nbsp
+          <%= link_to 'Details', room %>&nbsp&nbsp&nbsp&nbsp
           <%= link_to 'Edit', edit_room_path(room) %>&nbsp&nbsp&nbsp&nbsp
-          <%= link_to 'Destroy', room, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <%= link_to 'Delete', room, method: :delete, data: { confirm: 'Are you sure?' } %>
       </li>
     <% end %>
+
+
   </ul>
 
-</table>
 
-<br>
-
-<%  link_to 'New Room', new_room_path %>
+<%= link_to 'Return to manage rooms', admin_manage_room_url %></table>

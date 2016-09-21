@@ -41,4 +41,10 @@ module SessionsHelper
     end
   end
 
+  def allowed_user
+    if not user_logged_in?
+      redirect_to login_url
+    end
+  end
+
 end
