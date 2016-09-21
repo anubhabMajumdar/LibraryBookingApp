@@ -1,0 +1,28 @@
+<h1>Add Admin</h1>
+<body>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+
+    <%= form_for @admin_user, url: search_admin_url do |field| %>
+        <%= field.label :email %>
+        <%= field.email_field :email %>
+        <%= field.submit "Search", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div></br>
+
+<div class="row">
+  <ul class="list-group">
+    <h2><%= "Search Results"%> </h2>
+    <% if @search_result!=nil%>
+        <li class="list-group-item">
+          <%= @search_result.name %>&nbsp&nbsp&nbsp&nbsp
+          <%= @search_result.email %>&nbsp&nbsp&nbsp&nbsp
+          <%= link_to "Make admin", make_admin_url(:email => @search_result.email) , method: "post" %>
+        </li>
+    <%end%>
+  </ul>
+</div>
+</body>
+
