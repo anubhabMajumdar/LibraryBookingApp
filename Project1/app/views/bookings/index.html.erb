@@ -31,7 +31,7 @@
     </div>
 
 
-  <% @checkbookings =Booking.find_by_sql(" SELECT *
+<% @checkbookings =Booking.find_by_sql(" SELECT *
                                       FROM bookings
                                       WHERE username = 'user111' and date > #{Time.new.strftime('%Y-%m-%d')}") %>
 
