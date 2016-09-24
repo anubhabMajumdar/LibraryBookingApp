@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Project1</title>
+    <title>Library Booking App</title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all','data-turbolinks-track'=> 'reload' %>
@@ -9,6 +9,13 @@
   </head>
 
   <body>
+    <%= render 'layouts/header' %>
+    <div>
+      <% flash.each do |message_type, message| %>
+          <div class="alert alert-<%= message_type %>"><%= message %></div>
+      <% end %>
+    </div>
     <%= yield %>
+    <%= render 'layouts/footer' %>
   </body>
 </html>

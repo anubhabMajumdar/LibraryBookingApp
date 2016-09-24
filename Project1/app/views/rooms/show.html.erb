@@ -1,19 +1,23 @@
-<p id="notice"><%= notice %></p>
+<body>
+<h2>
+  Room <%=@room.room_id%>
+</h2>
 
-<p>
-  <strong>Room:</strong>
-  <%= @room.room_id %>
-</p>
+<ul class="list-group">
+  <li class="list-group-item">
+    <strong>Building:</strong>
+    <%= @room.building %>
+  </li>
 
-<p>
-  <strong>Building:</strong>
-  <%= @room.building %>
-</p>
+  <li class="list-group-item">
+    <strong>Size:</strong>
+    <%= @room.size %>
+  </li>
 
-<p>
-  <strong>Size:</strong>
-  <%= @room.size %>
-</p>
 
-<%= link_to 'Edit', edit_room_path(@room) %> |
-<%= link_to 'Back', rooms_path %>
+
+</ul>
+</body>
+
+
+<%= link_to 'Return to room list', rooms_url %></table>

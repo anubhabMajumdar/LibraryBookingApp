@@ -1,5 +1,5 @@
 class RoomsController < ApplicationController
-  before_action :set_room, only: [:show, :edit, :update, :destroy]
+  before_action :allowed_user
 
   # GET /rooms
   # GET /rooms.json
@@ -10,6 +10,7 @@ class RoomsController < ApplicationController
   # GET /rooms/1
   # GET /rooms/1.json
   def show
+    set_room
   end
 
   # GET /rooms/new
@@ -20,6 +21,8 @@ class RoomsController < ApplicationController
   # GET /rooms/1/edit
   def edit
     @room=Room.find(params[:id])
+    set_room
+    #maybe a bug here
   end
 
   # POST /rooms
@@ -27,39 +30,42 @@ class RoomsController < ApplicationController
   def create
     @room = Room.new(room_params)
 
-    respond_to do |format|
+    # respond_to do |format|
       if @room.save
-        format.html { redirect_to @room, notice: 'Room was successfully created.' }
-        format.json { render :show, status: :created, location: @room }
+        # format.html { redirect_to @room, notice: 'Room was successfully created.' }
+        # format.json { render :show, status: :created, location: @room }
+        flash[:success] = "Room successfully added"
+        redirect_to admin_manage_room_path
       else
-        format.html { render :new }
-        format.json { render json: @room.errors, status: :unprocessable_entity }
+        # format.html { render :new }
+        # format.json { render json: @room.errors, status: :unprocessable_entity }
+        flash[:danger] = "Room couldn't be added. Please try again"
+        render 'new'
       end
-    end
+    # end
   end
 
   # PATCH/PUT /rooms/1
   # PATCH/PUT /rooms/1.json
   def update
-    respond_to do |format|
+      set_room
       if @room.update(room_params)
-        format.html { redirect_to @room, notice: 'Room was successfully updated.' }
-        format.json { render :show, status: :ok, location: @room }
+        flash[:success] = "Room successfully updated"
+        redirect_to rooms_path
       else
-        format.html { render :edit }
-        format.json { render json: @room.errors, status: :unprocessable_entity }
+        flash[:danger] = "Room couldn't be updated. Please try again"
+        render 'new'
       end
-    end
   end
 
   # DELETE /rooms/1
   # DELETE /rooms/1.json
   def destroy
+    set_room
     @room.destroy
-    respond_to do |format|
-      format.html { redirect_to rooms_url, notice: 'Room was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    flash[:success] = "Room successfully removed"
+    redirect_to rooms_path
+
   end
 
   private
