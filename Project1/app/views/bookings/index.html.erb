@@ -1,77 +1,73 @@
 <p id="notice"><%= notice %></p>
 
-<h1> the relation information about bookings</h1>
+<h1> Room Information</h1>
+<body>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <li class="list-group-item">
 
-<table>
-  <thead>
-    <tr>
-      <th>Room</th>
-      <th>Bookday</th>
-      <th>Date</th>
-      <th>Starttime</th>
-      <th>Endtime</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+      <th>Room</th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <th>Size</th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <th>Building</th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <!--<th>End time</th>&nbsp&nbsp&nbsp&nbsp-->
+        <!--<th colspan="3"></th>-->
+      </li>
+    </div>
+  </div>
 
-  <tbody>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
     <%@bookings.each do |booking| %>
-      <tr>
-        <td><%= booking.room_id %></td>
-        <td><%= booking.bookday %></td>
-        <td><%= booking.date.strftime('%Y-%m-%d') %></td>
-        <td><%= booking.starttime %></td>
-        <td><%= booking.endtime %></td>
-      </tr>
+      <li class="list-group-item">
+
+        <%= booking.room_id %>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <%= booking.size %>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <%= booking.building %>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+
+
+      </li>
     <% end %>
-  </tbody>
-</table>
-
-
-<% @checkbookings =Booking.find_by_sql(" SELECT *
-                                    FROM bookings
-                                    WHERE username = 'user111' and date > #{Time.new.strftime('%Y-%m-%d')}")
-%>
-
-<% if(@checkbookings).equal?([])%>
-    <h1> One user just can book a room unless you release your room </h1>
-
-<%else%>
-
-<h1>the information you need to input to book room</h1>
-
-<%= form_for @newbooking do|f| %>
-
-    <div class="field">
-      <%= f.label :room_id %>
-      <%= f.text_field :room_id %>
+      </div>
     </div>
 
-    <!--the information we need to judge the user is normal user or admin
-    <div class="field">
-      <%= f.label :username %>
-      <%= f.text_field :username %>
-    </div>
-    -->
 
-    <div class="field">
-      <%= f.label :date %>
-      <%= f.date_select :date %>
-    </div>
+  <% @checkbookings =Booking.find_by_sql(" SELECT *
+                                      FROM bookings
+                                      WHERE username = 'user111' and date > #{Time.new.strftime('%Y-%m-%d')}") %>
 
-    <div class="field">
-      <%= f.label :starttime %>
-      <%= f.text_field :starttime %>
-    </div>
+  <% if(@checkbookings).equal?([])%>
+      <h1> One user just can book a room unless you release your room </h1>
 
-    <div class="field">
-      <%= f.label :endtime %>
-      <%= f.text_field :endtime %>
-    </div>
+  <%else%>
 
-    <div class="actions">
-      <%= f.submit%>
+  <h2>Please fill the form to book a room</h2>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
 
-    </div>
-<% end %>
-<% end %>
+      <%= form_for @newbooking do|f| %>
+                <%= f.label :room_id %>
+                <%= f.text_field :room_id %>
+
+                <%= f.label :username %>
+                <%= f.text_field :username %>
+
+
+                <%= f.label :Date %>
+                <%= f.date_select :date %>
+
+                <%= f.label :"Start-Time" %>
+                <%= f.select :starttime, @hours %>
+
+                <%= f.label :"End-Time" %>
+                <%= f.select :endtime, @hours %>
+
+                <%= f.submit "Book", class: "btn btn-primary"%>
+
+          <%end%>
+        </div>
+      </div>
+
+  <% end %>
+</body>
+
+<%= link_to 'Back to Search Rooms', search_room_url %>
