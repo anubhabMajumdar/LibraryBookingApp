@@ -78,12 +78,19 @@ end
       if(@room.size!="")
         ab=ab+"size = '#{@room.size}'"
       end
+      if(@room.size!=""&&@room.building!="")
+        ab=ab+"and building ='#{@room.building}'"
+      end
       if(@room.building!="")
-        ab=ab+"and bulding ='#{@room.bulding}'"
+        ab=ab+"building ='#{@room.building}'"
+      end
+      if((@room.size!=""&&@room.room_id!="")||(@room.building!=""&&@room.room_id!=""))
+        ab=ab+"and room_id = '#{@room.room_id}'"
       end
       if(@room.room_id!="")
-        ab=ab+"and roomid = '#{@room.roomid}'"
+        ab=ab+" room_id = '#{@room.room_id}'"
       end
+
       ab="#{ab}) and bookday > '#{currentime.strftime('%Y-%m-%d')}'"
 
       @@hello=Booking.find_by_sql(ab)
