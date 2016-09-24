@@ -1,5 +1,6 @@
 class BookingsController < ApplicationController
-  before_action :set_booking, only: [:show, :edit, :update, :destroy]
+  #before_action :set_booking, only: [:show, :edit, :update, :destroy]
+
   @@hello=nil
   # GET /bookings
   # GET /bookings.json
@@ -33,8 +34,10 @@ end
 
 
   def cancel
-      @bookings_cancel= Booking.find(params[:id])
-      @bookings_cancel.destory
+    @bookings_cancel= Booking.find(params[:format])
+    @bookings_cancel.destroy
+    redirect_to release_room_path
+
 
 
   end
@@ -50,15 +53,12 @@ end
 
   def release
     current_time=Time.new
-    admin="admin"
-    sql="select * from bookings where username ='"+admin+"' and date ='#{current_time}'"
-    @recordbookings=find_by_sql(sql)
-   # @recordbookings = Booking.find(params[:id])
+    @recordbookings = Booking.find(params[:format])
     hours=current_time.hour
     minute=current_time.min
     timeslot=hours*2+minute/30
     @recordbookings.endtime=timeslot
-    @recordbookins.update(entime: timeslot)
+    @recordbookings.update(entime: timeslot)
     redirect_to show_bookings_path
 
   end
@@ -66,15 +66,15 @@ end
   def search_room
 
     @rooms=Room.new
-    debugger
+   # debugger
   end
 
   def search
-    debugger
+    #debugger
       @room = Room.new(room_params)
       currentime=Time.new
       time="2016-09-18"
-      ab="select * from bookings where roomid in (select roomid from rooms where "
+      ab="select * from bookings where room_id in (select room_id from rooms where "
       if(@room.size!="")
         ab=ab+"size = '#{@room.size}'"
       end
@@ -87,10 +87,11 @@ end
       ab="#{ab}) and bookday > '#{currentime.strftime('%Y-%m-%d')}'"
 
       @@hello=Booking.find_by_sql(ab)
-      redirect_to show_bookings_path
+      redirect_to bookings_path
   end
 
  def save_room
+   #obtain username
     @newbooking = Booking.new(booking_params)
     @newbooking.bookday="2016-08-09"##how to store bookday
     @newbooking.username="user"
@@ -109,16 +110,22 @@ end
    @booking = Booking.new(booking_params)
    @booking.username="user"
    @booking.bookday=Time.new
-   debugger
-    respond_to do |format|
-      if @booking.save
-       format.html { redirect_to @booking, notice: 'Booking was successfully created.' }
-        format.json { render :show, status: :created, location: @booking }
+   #debugger
+     #respond_to do |format|
+      if Integer(@booking.endtime)-Integer(@booking.starttime)>4 || Integer(@booking.endtime)-Integer(@booking.starttime)<=0
+        redirect_to bookings_path,notice: 'The input is wrong, Bookings can be made for 2 hour slots!!'
+
       else
-        format.html { render :new }
-        format.json { render json: @booking.errors, status: :unprocessable_entity }
-      end
-    end
+        respond_to do |format|
+           if @booking.save
+            format.html { redirect_to @booking, notice: 'Booking was successfully created.' }
+            format.json { render :show, status: :created, location: @booking }
+          else
+            format.html { render :new }
+            format.json { render json: @booking.errors, status: :unprocessable_entity }
+           end
+        end
+        end
  end
 
   # PATCH/PUT /bookings/1

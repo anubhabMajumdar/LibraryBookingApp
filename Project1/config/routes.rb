@@ -4,9 +4,9 @@ Rails.application.routes.draw do
   post 'search_room', to: 'bookings#search'
   get 'release_room' =>'bookings#release_room'
   post 'release_room', to: 'bookings#release'
+  post 'index',to:'bookings#save_room'
   post'/cancel', to: 'bookings#cancel'
-  post '/bookings',to:'bookings#save_room'
-  post '/bookings/:id', to:'bookings#'
+
   resources :rooms
 
   root"bookings#index"

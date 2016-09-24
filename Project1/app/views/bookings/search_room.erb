@@ -1,6 +1,7 @@
 <h1>the information you need to search to find the free room</h1>
 
 <%= form_for @rooms, url: search_room_path do |f| %>
+
     <div class="field">
       <%= f.label :size %>
       <%= f.text_field :size %>
@@ -17,7 +18,9 @@
     </div>
 
     <div class="actions">
-      <%= f.submit%>
+
+          <%= f.submit "Search"%>
+
     </div>
 
 <% end %>

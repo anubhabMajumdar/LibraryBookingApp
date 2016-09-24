@@ -19,7 +19,7 @@
       <tr>
         <td><%= booking.room_id %></td>
         <td><%= booking.bookday %></td>
-        <td><%= booking.date %></td>
+        <td><%= booking.date.strftime('%Y-%m-%d') %></td>
         <td><%= booking.starttime %></td>
         <td><%= booking.endtime %></td>
       </tr>
@@ -28,6 +28,15 @@
 </table>
 
 
+<% @checkbookings =Booking.find_by_sql(" SELECT *
+                                    FROM bookings
+                                    WHERE username = 'user111' and date > #{Time.new.strftime('%Y-%m-%d')}")
+%>
+
+<% if(@checkbookings).equal?([])%>
+    <h1> One user just can book a room unless you release your room </h1>
+
+<%else%>
 
 <h1>the information you need to input to book room</h1>
 
@@ -62,5 +71,7 @@
 
     <div class="actions">
       <%= f.submit%>
+
     </div>
+<% end %>
 <% end %>

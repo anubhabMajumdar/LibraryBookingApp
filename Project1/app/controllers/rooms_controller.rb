@@ -19,6 +19,7 @@ class RoomsController < ApplicationController
 
   # GET /rooms/1/edit
   def edit
+    @room=Room.find(params[:id])
   end
 
   # POST /rooms
