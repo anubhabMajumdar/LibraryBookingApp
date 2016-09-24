@@ -1,0 +1,11 @@
+<body>
+<h2>
+  Manage Rooms
+</h2>
+
+<ul class="list-group">
+      <li class="list-group-item"><%= link_to "Add room", new_room_url , method: "get" %></li>
+      <li class="list-group-item"><%= link_to "View/Edit/Delete room", rooms_url, method: "get" %></li>
+      <li class="list-group-item"><%= link_to "Book room", "#" , method: "get" %></li>
+</ul>
+</body>

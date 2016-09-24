@@ -1,0 +1,20 @@
+<!--Boilerplate CSS code used from https://www.railstutorial.org/book-->
+
+<header class="navbar navbar-fixed-top navbar-inverse">
+  <div class="container">
+    <%= link_to "Library Booking App", '#', id: "logo" %>
+    <nav>
+      <ul class="nav navbar-nav navbar-right">
+        <% if user_logged_in?%>
+          <li><%= link_to "Home",   user_path(session[:user_id]) %></li>
+        <% end %>
+        <li><%= link_to "Help",   'https://drive.google.com/file/d/0B6myGbDBVWh3TmJObkQteWJsdE0/view?usp=sharing' %></li>
+        <% if user_logged_in?%>
+          <li><%= link_to "Logout", logout_path, method: "delete" %></li>
+        <% else %>
+            <li><%= link_to "Login", login_path, method: "get" %></li>
+        <% end %>
+      </ul>
+    </nav>
+  </div>
+</header>

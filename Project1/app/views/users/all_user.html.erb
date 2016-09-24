@@ -1,0 +1,15 @@
+<h1>Users</h1>
+<body>
+<ul class="list-group">
+  <% @all_users.each do |each_user| %>
+      <li class="list-group-item">
+        <%= each_user.name %>&nbsp&nbsp&nbsp&nbsp
+        <%= each_user.email %>&nbsp&nbsp&nbsp&nbsp
+        <%= link_to "Reservation History", "#" , method: "get" %>&nbsp&nbsp&nbsp&nbsp
+        <%= link_to "Remove user", remove_user_url(:email => each_user.email) , method: "post", data: { confirm: 'Are you sure?' } %>
+      </li>
+  <% end %>
+</ul>
+</body>
+
+<%= link_to 'Return to manage users', admin_manage_user_url %></table>
