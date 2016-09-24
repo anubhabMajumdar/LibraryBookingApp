@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  room_id: MyString
+  username: MyString
+  string: MyString
+  bookday: 2016-09-18 23:41:57
+  date: 2016-09-18 23:41:57
+  starttime: MyString
+  endtime: MyString
+
+two:
+  room_id: MyString
+  username: MyString
+  string: MyString
+  bookday: 2016-09-18 23:41:57
+  date: 2016-09-18 23:41:57
+  starttime: MyString
+  endtime: MyString

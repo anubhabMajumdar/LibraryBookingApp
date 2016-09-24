@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<h1> the relation information about bookings</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Room</th>
+    <th>Username</th>
+    <th>Bookday</th>
+    <th>Date</th>
+    <th>Starttime</th>
+    <th>Endtime</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @showing_booking.each do |booking| %>
+      <tr>
+        <td><%= booking.room_id %></td>
+        <td><%= booking.username %></td>
+        <td><%= booking.bookday %></td>
+        <td><%= booking.date.strftime('%Y-%m-%d') %></td>
+        <td><%= booking.starttime %></td>
+        <td><%= booking.endtime %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

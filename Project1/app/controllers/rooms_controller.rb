@@ -20,7 +20,9 @@ class RoomsController < ApplicationController
 
   # GET /rooms/1/edit
   def edit
+    @room=Room.find(params[:id])
     set_room
+    #maybe a bug here
   end
 
   # POST /rooms
