@@ -1,18 +1,24 @@
 class BookingsController < ApplicationController
   #before_action :set_booking, only: [:show, :edit, :update, :destroy]
-
-  @@hello=nil
+  @@req_rooms=nil
   # GET /bookings
   # GET /bookings.json
   def index
-    @bookings = Booking.all
     @newbooking=Booking.new
-    if(@@hello!=nil)
-      @bookings=@@hello
-    puts @tan
-  else
-
-  end
+    if @@req_rooms
+      @bookings=@@req_rooms
+    # puts @tan
+    else
+      @bookings = Room.new
+    end
+    # @hours = ["00:00", "00:30" ]
+    @hours = []
+    (0..23).each do |i|
+      ["00", "30"].each do |j|
+        @hours.push("#{i}:#{j}")
+        end
+    end
+    # debugger
 end
   # GET /bookings/1
   # GET /bookings/1.json
@@ -66,29 +72,49 @@ end
   def search_room
 
     @rooms=Room.new
-   # debugger
+    # @all_room_id = Room.all.pluck(:id)
+
+    # debugger
   end
+
+  # def search
+  #   #debugger
+  #     @room = Room.new(room_params)
+  #     currentime=Time.new
+  #     time="2016-09-18"
+  #     # ab="select * from rooms where room_id in (select room_id from rooms where "
+  #     ab="select * from rooms where "
+  #     if(@room.size!="")
+  #       ab=ab+"size = '#{@room.size}'"
+  #     end
+  #     if(@room.building!="")
+  #       ab=ab+"and building ='#{@room.building}'"
+  #     end
+  #     if(@room.room_id!="")
+  #       ab=ab+"and roomid = '#{@room.roomid}'"
+  #     end
+  #     # ab="#{ab}) and bookday > '#{currentime.strftime('%Y-%m-%d')}'"
+  #     ab="#{ab})"
+  #     @@hello=Booking.find_by_sql(ab)
+  #     redirect_to bookings_path
+  # end
 
   def search
-    #debugger
-      @room = Room.new(room_params)
-      currentime=Time.new
-      time="2016-09-18"
-      ab="select * from bookings where room_id in (select room_id from rooms where "
-      if(@room.size!="")
-        ab=ab+"size = '#{@room.size}'"
-      end
-      if(@room.building!="")
-        ab=ab+"and bulding ='#{@room.bulding}'"
-      end
-      if(@room.room_id!="")
-        ab=ab+"and roomid = '#{@room.roomid}'"
-      end
-      ab="#{ab}) and bookday > '#{currentime.strftime('%Y-%m-%d')}'"
-
-      @@hello=Booking.find_by_sql(ab)
-      redirect_to bookings_path
+    @room = Room.new(room_params)
+    @@req_rooms = Room.all
+    # debugger
+    if @room.size!=""
+      @@req_rooms = @@req_rooms.where(size: @room.size).all
+    end
+    if @room.building!=""
+      @@req_rooms = @@req_rooms.where(building: @room.building).all
+    end
+    if @room.room_id != ""
+      @@req_rooms = @@req_rooms.where(room_id: @room.room_id).all
+    end
+    redirect_to bookings_path
   end
+
 
  def save_room
    #obtain username

@@ -1,26 +1,20 @@
-<h1>the information you need to search to find the free room</h1>
+<h1>Search Room</h1>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
 
-<%= form_for @rooms, url: search_room_path do |f| %>
+      <%= form_for @rooms, url: search_room_path do |f| %>
 
-    <div class="field">
-      <%= f.label :size %>
-      <%= f.text_field :size %>
-    </div>
+          <%= f.label :size %>
+          <%= f.select :size, [nil, 4, 6, 12] %>
 
-    <div class="field">
-      <%= f.label :building %>
-      <%= f.text_field :building %>
-    </div>
+          <%= f.label :building %>
+          <%= f.select :building, [nil, "James B. Hunt", "D. H. Hill"] %>
 
-    <div class="field">
-      <%= f.label :room_id %>
-      <%= f.text_field :room_id %>
-    </div>
+          <%= f.label :room_id %>
+          <%= f.text_field :room_id %>
 
-    <div class="actions">
+          <%= f.submit "Search", class: "btn btn-primary" %>
 
-          <%= f.submit "Search"%>
-
-    </div>
-
-<% end %>
+  <% end %>
+  </div>
+</div>

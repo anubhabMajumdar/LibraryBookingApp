@@ -11,7 +11,6 @@ Rails.application.routes.draw do
   root  'sessions#new'
   resources :rooms
 
-  root"bookings#index"
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   resources :users do
@@ -37,4 +36,6 @@ Rails.application.routes.draw do
   get      '/admin_manage_user',    to: 'users#admin_manage_user'
   get       '/all_user',            to: 'users#all_user'
   post      '/remove_user',         to: 'users#remove_user'
+
+  get       '/search_room',          to: 'bookings#search_room'
 end

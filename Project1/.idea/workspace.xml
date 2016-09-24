@@ -77,7 +77,7 @@
       <file leaf-file-name="users_controller.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/users_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
+            <state relative-caret-position="15">
               <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
 >>>>>>> master
               <folding />
@@ -274,7 +274,11 @@
     </navigator>
     <panes>
 <<<<<<< HEAD
+      <pane id="Scratches" />
 =======
+<<<<<<< HEAD
+=======
+>>>>>>> master
       <pane id="Scope" />
 >>>>>>> master
       <pane id="ProjectPane">
@@ -767,10 +771,13 @@
         </subPane>
       </pane>
       <pane id="RailsProjectView" />
+<<<<<<< HEAD
+=======
       <pane id="Scratches" />
 <<<<<<< HEAD
       <pane id="Scope" />
 =======
+>>>>>>> master
 >>>>>>> master
     </panes>
   </component>
@@ -1118,7 +1125,8 @@
       <workItem from="1474419569798" duration="107000" />
       <workItem from="1474420069325" duration="279000" />
       <workItem from="1474420780215" duration="11288000" />
-      <workItem from="1474728203875" duration="36000" />
+      <workItem from="1474728203875" duration="322000" />
+      <workItem from="1474732962965" duration="68000" />
     </task>
     <servers />
   </component>
@@ -1128,13 +1136,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71267000" />
+    <option name="totallyTimeSpent" value="71621000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2932761" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29756796" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1887,7 +1895,7 @@
 =======
     <entry file="file://$PROJECT_DIR$/app/controllers/users_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
+        <state relative-caret-position="15">
           <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
 >>>>>>> master
           <folding />
