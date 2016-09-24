@@ -30,7 +30,7 @@
 
 <% @checkbookings =Booking.find_by_sql(" SELECT *
                                     FROM bookings
-                                    WHERE username = 'user111' and date > #{Time.new.strftime('%Y-%m-%d')}")
+                                    WHERE username = 'user111' and date >= #{Time.new.strftime('%Y-%m-%d')}")
 %>
 
 <% if(@checkbookings).equal?([])%>

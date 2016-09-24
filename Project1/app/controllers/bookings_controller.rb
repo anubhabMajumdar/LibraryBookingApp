@@ -121,8 +121,9 @@ end
      #respond_to do |format|
       if Integer(@booking.endtime)-Integer(@booking.starttime)>4 || Integer(@booking.endtime)-Integer(@booking.starttime)<=0
         redirect_to bookings_path,notice: 'The input is wrong, Bookings can be made for 2 hour slots!!'
-
-      else
+      elsif
+        @booking=Booking.where()
+        else
         respond_to do |format|
            if @booking.save
             format.html { redirect_to @booking, notice: 'Booking was successfully created.' }
