@@ -1,11 +1,11 @@
 class UsersController < ApplicationController
+  before_action :allowed_user, only: [:show, :edit, :update, :show_admins, :add_admin, :search_admin,
+                                      :make_admin, :admin_manage_room, :remove_admin, :admin_manage_user,
+                                      :all_user, :remove_user]
+
 
   def show
-    if user_logged_in?
-      @user = User.find(session[:user_id])
-    else
-      redirect_to login_path
-    end
+    @user = User.find(session[:user_id])
   end
 
   def new
@@ -26,12 +26,8 @@ class UsersController < ApplicationController
   end
 
   def edit
-    if user_logged_in?
-      @user = User.find(session[:user_id])
+    @user = User.find(session[:user_id])
 
-    else
-      redirect_to login_path
-    end
   end
 
   def update
@@ -88,16 +84,37 @@ class UsersController < ApplicationController
   end
 
   def remove_admin
-    # debugger
     @user_for_admin = User.find_by(email: params[:email])
     if @user_for_admin.update_attribute(:Admin, false)
         flash.now[:success] = "#{@user_for_admin.name} successfully removed as admin"
       else
-        flash.now[:danger] = "Cannot be removed as admin. Please try again"
+        flash.now[:danger] = "#{@user_for_admin.name} cannot be removed as admin. Please try again"
     end
     @all_admins = User.get_admins
     render  'show_admins'
   end
+
+  def admin_manage_room
+  end
+
+  def admin_manage_user
+  end
+
+  def all_user
+    @all_users = User.where(Admin: false).all
+  end
+
+  def remove_user
+    @user_for_deletion = User.find_by(email: params[:email])
+    if @user_for_deletion.destroy
+      flash.now[:success] = "#{@user_for_deletion.name} successfully removed as user"
+    else
+      flash.now[:danger] = "#{@user_for_deletion.name} cannot be removed as user. Please try again"
+    end
+    @all_users = User.where(Admin: false).all
+    redirect_to all_user_path
+  end
+
 
   private
 
@@ -108,6 +125,7 @@ class UsersController < ApplicationController
     def return_email
       params.require(:user).permit(:email)
     end
+
 
 
 end

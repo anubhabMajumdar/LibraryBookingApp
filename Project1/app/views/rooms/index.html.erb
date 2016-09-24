@@ -2,30 +2,21 @@
 
 <h1>Rooms</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Room</th>
-      <th>Building</th>
-      <th>Size</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+  <ul class="list-group">
 
-  <tbody>
+
     <% @rooms.each do |room| %>
-      <tr>
-        <td><%= room.room_id %></td>
-        <td><%= room.building %></td>
-        <td><%= room.size %></td>
-        <td><%= link_to 'Show', room %></td>
-        <td><%= link_to 'Edit', edit_room_path(room) %></td>
-        <td><%= link_to 'Destroy', room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+        <li class="list-group-item">
+          <%= room.room_id %>&nbsp&nbsp&nbsp&nbsp
+          <%= room.building %>&nbsp&nbsp&nbsp&nbsp
+          <%= link_to 'Details', room %>&nbsp&nbsp&nbsp&nbsp
+          <%= link_to 'Edit', edit_room_path(room) %>&nbsp&nbsp&nbsp&nbsp
+          <%= link_to 'Delete', room, method: :delete, data: { confirm: 'Are you sure?' } %>
+      </li>
     <% end %>
-  </tbody>
-</table>
 
-<br>
 
-<%= link_to 'New Room', new_room_path %>
+  </ul>
+
+
+<%= link_to 'Return to manage rooms', admin_manage_room_url %></table>
