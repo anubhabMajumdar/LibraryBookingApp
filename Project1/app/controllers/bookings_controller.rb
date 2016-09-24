@@ -1,8 +1,10 @@
 class BookingsController < ApplicationController
+  before_action :allowed_user
   #before_action :set_booking, only: [:show, :edit, :update, :destroy]
   @@req_rooms=nil
   require'time'
   @@hello=nil
+  # @@curuser = User.find(session[:user_id])
   # GET /bookings
   # GET /bookings.json
   def index
@@ -79,50 +81,6 @@ end
     # debugger
   end
 
-  # def search
-  #   #debugger
-  #     @room = Room.new(room_params)
-  #     currentime=Time.new
-  #     time="2016-09-18"
-  #     # ab="select * from rooms where room_id in (select room_id from rooms where "
-  #     ab="select * from rooms where "
-  #     if(@room.size!="")
-  #       ab=ab+"size = '#{@room.size}'"
-  #     end
-  #     if(@room.building!="")
-  #       ab=ab+"and building ='#{@room.building}'"
-  #     end
-  #     if(@room.room_id!="")
-  #       ab=ab+"and roomid = '#{@room.roomid}'"
-  #     end
-  #     # ab="#{ab}) and bookday > '#{currentime.strftime('%Y-%m-%d')}'"
-  #     ab="#{ab})"
-  #     @@hello=Booking.find_by_sql(ab)
-  #     redirect_to bookings_path
-  # end
-#  def search
-#    #debugger
-#      @room = Room.new(room_params)
-#      currentime=Time.new
-#      time="2016-09-18"
-#      ab="select * from bookings where room_id in (select room_id from rooms where "
-#      if(@room.size!="")
-#        ab=ab+"size = '#{@room.size}'"
-#      end
-#      if(@room.size!=""&&@room.building!="")
-#        ab=ab+"and building ='#{@room.building}'"
-#      end
-#      if(@room.building!="")
-#        ab=ab+"building ='#{@room.building}'"
-#      end
-#      if((@room.size!=""&&@room.room_id!="")||(@room.building!=""&&@room.room_id!=""))
-#        ab=ab+"and room_id = '#{@room.room_id}'"
-#      end
-#      if(@room.room_id!="")
-#        ab=ab+" room_id = '#{@room.room_id}'"
-#      end
-#
-#      ab="#{ab}) and bookday > '#{currentime.strftime('%Y-%m-%d')}'"
 
   def search
     @room = Room.new(room_params)
@@ -159,16 +117,23 @@ end
 
   def create
 
-   @booking = Booking.new(booking_params)
-     @booking.username="user"
+    @booking = Booking.new(booking_params)
+     @booking.username = User.find(session[:user_id]).email
      @booking.bookday=Time.new
-     #debugger
+     debugger
        #respond_to do |format|
-     @bookingrecord=Booking.where("room_id=? and date = ?",booking_params[:room_id],booking_params[:date])
+    bookdate=booking_params["date(1i)"]+"-"+booking_params["date(2i)"]+"-"+booking_params["date(3i)"]
+    @booking.endtime = @booking.endtime+":00"
+    @booking.starttime = @booking.starttime+":00"
+
+    @bookingrecord=Booking.where("room_id= ? and date = ?",booking_params[:room_id],bookdate)
+    debugger
       if (Time.parse(@booking.endtime)-Time.parse(@booking.starttime))/1800 > 4 ||Time.parse(@booking.endtime)-Time.parse(@booking.starttime)<0
-        redirect_to bookings_path,notice: 'The input is wrong, Bookings can be made for 2 hour slots!!'
+        flash[:danger] = "Cannot book for more that 2 hours"
+        redirect_to bookings_path
       elsif not (timeconstrain(@bookingrecord,@booking))
-        redirect_to bookings_path,notice: 'The booking time is wrong, the time period is booked by others!!'
+        flash[:danger] = "The room is booked during that period. Try another room or another time"
+        redirect_to bookings_path
       else
         respond_to do |format|
            if @booking.save
@@ -178,6 +143,9 @@ end
             format.html { render :new }
             format.json { render json: @booking.errors, status: :unprocessable_entity }
            end
+        # flash[:success] = "Room successfully booked"
+        # # redirect_to bookings_path
+        # redirect_to @booking
         end
         end
  end
@@ -227,19 +195,19 @@ end
         bookingrecord.each do |book|
         startindex=(Time.parse(book.starttime).hour)*2+(Time.parse(book.starttime).min)/30
         endindex=(Time.parse(book.endtime).hour)*2+(Time.parse(book.endtime).min)/30
-        while startindex<=endindex
+        while startindex<endindex
           timeslot[starttime]=1
           startindex=startindex+1
         end
         end
         insertstart=(Time.parse(booking.starttime).hour)*2+(Time.parse(booking.starttime).min)/30
         insertend=(Time.parse(booking.endtime).hour)*2+(Time.parse(booking.endtime).min)/30
-        while insertstart<=insertend
+        while insertstart<insertend
               if timeslot[insertstart]!=0
                 return false
               end
               insertstart=insertstart+1
         end#while
-
+        return true
     end#function
 end
