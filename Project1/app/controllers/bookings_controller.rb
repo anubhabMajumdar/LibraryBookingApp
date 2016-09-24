@@ -1,6 +1,6 @@
 class BookingsController < ApplicationController
   #before_action :set_booking, only: [:show, :edit, :update, :destroy]
-
+  require'time'
   @@hello=nil
   # GET /bookings
   # GET /bookings.json
@@ -112,18 +112,20 @@ end
 
   # POST /bookings
   # POST /bookings.json
+
   def create
 
    @booking = Booking.new(booking_params)
-   @booking.username="user"
-   @booking.bookday=Time.new
-   #debugger
-     #respond_to do |format|
-      if Integer(@booking.endtime)-Integer(@booking.starttime)>4 || Integer(@booking.endtime)-Integer(@booking.starttime)<=0
+     @booking.username="user"
+     @booking.bookday=Time.new
+     #debugger
+       #respond_to do |format|
+     @bookingrecord=Booking.where("room_id=? and date = ?",booking_params[:room_id],booking_params[:date])
+      if (Time.parse(@booking.endtime)-Time.parse(@booking.starttime))/1800 > 4 ||Time.parse(@booking.endtime)-Time.parse(@booking.starttime)<0
         redirect_to bookings_path,notice: 'The input is wrong, Bookings can be made for 2 hour slots!!'
-      elsif
-        @booking=Booking.where()
-        else
+      elsif not (timeconstrain(@bookingrecord,@booking))
+        redirect_to bookings_path,notice: 'The booking time is wrong, the time period is booked by others!!'
+      else
         respond_to do |format|
            if @booking.save
             format.html { redirect_to @booking, notice: 'Booking was successfully created.' }
@@ -175,4 +177,25 @@ end
     def room_params
       params.require(:room).permit(:size, :building,:room_id)
     end
+
+    def timeconstrain(bookingrecord,booking )
+        timeslot=Array.new(48,0)
+        bookingrecord.each do |book|
+        startindex=(Time.parse(book.starttime).hour)*2+(Time.parse(book.starttime).min)/30
+        endindex=(Time.parse(book.endtime).hour)*2+(Time.parse(book.endtime).min)/30
+        while startindex<=endindex
+          timeslot[starttime]=1
+          startindex=startindex+1
+        end
+        end
+        insertstart=(Time.parse(booking.starttime).hour)*2+(Time.parse(booking.starttime).min)/30
+        insertend=(Time.parse(booking.endtime).hour)*2+(Time.parse(booking.endtime).min)/30
+        while insertstart<=insertend
+              if timeslot[insertstart]!=0
+                return false
+              end
+              insertstart=insertstart+1
+        end#while
+
+    end#function
 end
