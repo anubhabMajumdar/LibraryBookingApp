@@ -22,6 +22,7 @@ class BookingsController < ApplicationController
         @hours.push("#{i}:#{j}")
         end
     end
+    @roomids = Room.all.pluck(:room_id)
     # debugger
 end
   # GET /bookings/1
@@ -120,14 +121,16 @@ end
     @booking = Booking.new(booking_params)
      @booking.username = User.find(session[:user_id]).email
      @booking.bookday=Time.new
-     debugger
        #respond_to do |format|
-    bookdate=booking_params["date(1i)"]+"-"+booking_params["date(2i)"]+"-"+booking_params["date(3i)"]
+    if booking_params["date(2i)"].length==1
+      bookdate=booking_params["date(1i)"]+"-0"+booking_params["date(2i)"]+"-"+booking_params["date(3i)"]+" 00:00:00"
+    else
+      bookdate=booking_params["date(1i)"]+"-"+booking_params["date(2i)"]+"-"+booking_params["date(3i)"]+" 00:00:00"
+      end
     @booking.endtime = @booking.endtime+":00"
     @booking.starttime = @booking.starttime+":00"
 
     @bookingrecord=Booking.where("room_id= ? and date = ?",booking_params[:room_id],bookdate)
-    debugger
       if (Time.parse(@booking.endtime)-Time.parse(@booking.starttime))/1800 > 4 ||Time.parse(@booking.endtime)-Time.parse(@booking.starttime)<0
         flash[:danger] = "Cannot book for more that 2 hours"
         redirect_to bookings_path
@@ -135,17 +138,22 @@ end
         flash[:danger] = "The room is booked during that period. Try another room or another time"
         redirect_to bookings_path
       else
-        respond_to do |format|
-           if @booking.save
-            format.html { redirect_to @booking, notice: 'Booking was successfully created.' }
-            format.json { render :show, status: :created, location: @booking }
-          else
-            format.html { render :new }
-            format.json { render json: @booking.errors, status: :unprocessable_entity }
-           end
-        # flash[:success] = "Room successfully booked"
-        # # redirect_to bookings_path
-        # redirect_to @booking
+        # respond_to do |format|
+        #    if @booking.save
+        #     format.html { redirect_to @booking, notice: 'Booking was successfully created.' }
+        #     format.json { render :show, status: :created, location: @booking }
+        #   else
+        #     format.html { render :new }
+        #     format.json { render json: @booking.errors, status: :unprocessable_entity }
+        #    end
+        # end
+        if @booking.save
+          flash[:success] = "Room successfully booked"
+        # redirect_to bookings_path
+          redirect_to bookings_path
+        else
+          flash[:danger] = "Cannot book room now. Please try later"
+          redirect_to bookings_path
         end
         end
  end
@@ -196,7 +204,7 @@ end
         startindex=(Time.parse(book.starttime).hour)*2+(Time.parse(book.starttime).min)/30
         endindex=(Time.parse(book.endtime).hour)*2+(Time.parse(book.endtime).min)/30
         while startindex<endindex
-          timeslot[starttime]=1
+          timeslot[startindex]=1
           startindex=startindex+1
         end
         end
