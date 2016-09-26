@@ -15,9 +15,37 @@ rails generate scaffold room room_id:string building:string size:string
 
 
 
+------------------------------------------------------------------------------
+
+How to deploy the website:
+
+1. edit Gemfile
+
+gem 'sqlite3', :group => [:development, :test]
+group :production do
+  gem 'thin'
+  gem 'pg'
+end
+
+2. remove Gemfile.lock
+
+rm -rf ~/.bundle/ ~/.gem/ .bundle/ Gemfile.lock
+
+3. bundle install --without production
+
+4. git add .
+
+5. git commit
+
+6. git push heroku master
 
 
 
+7. heroku rake db:migrate
+
+8. heroku run console
+
+------------------------------------------------------------------------------
 
 
 
