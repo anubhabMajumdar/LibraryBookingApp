@@ -40,13 +40,14 @@ rm -rf ~/.bundle/ ~/.gem/ .bundle/ Gemfile.lock
 6. git push heroku master
 
 
+7. 
+heroku pg:reset DATABASE
 
-7. heroku rake db:migrate
+heroku rake db:migrate
 
 8. heroku run console
 
 ------------------------------------------------------------------------------
-
 
 
 
