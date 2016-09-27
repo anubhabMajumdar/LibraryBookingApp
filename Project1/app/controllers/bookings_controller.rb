@@ -23,7 +23,7 @@ class BookingsController < ApplicationController
         end
     end
     @roomids = Room.all.pluck(:room_id)
-    # debugger
+    # #debugger
 end
   # GET /bookings/1
   # GET /bookings/1.json
@@ -58,7 +58,7 @@ end
     admin="admin"
     sql="select * from bookings where username ='#{admin}'and date >='#{current_time}'"
     @bookings=Booking.find_by_sql(sql)
-    #debugger
+    ##debugger
 
   end
 
@@ -79,14 +79,14 @@ end
     @rooms=Room.new
     # @all_room_id = Room.all.pluck(:id)
 
-    # debugger
+    # #debugger
   end
 
 
   def search
     @room = Room.new(room_params)
     @@req_rooms = Room.all
-    # debugger
+    # #debugger
     if @room.size!=""
       @@req_rooms = @@req_rooms.where(size: @room.size).all
     end
@@ -105,7 +105,7 @@ end
     @newbooking = Booking.new(booking_params)
     @newbooking.bookday="2016-08-09"##how to store bookday
     @newbooking.username="user"
-    debugger
+    #debugger
     if @newbooking.save
        puts 'Booking was successfully created.'
        redirect_to show_bookings_path
@@ -158,7 +158,7 @@ end
 
     #-------------
     #<begin> edited by Lei Zhang
-    debugger
+    #debugger
     duration = @booking.endtime - @booking.starttime
     if ((duration/1800 > 4) || (duration<0))
       flash[:danger] = "Cannot book for more that 2 hours or less than 0 hours"
