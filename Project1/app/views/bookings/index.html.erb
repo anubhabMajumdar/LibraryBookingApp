@@ -31,26 +31,16 @@
     </div>
 
 
-<% @checkbookings =Booking.find_by_sql(" SELECT *
-                                      FROM bookings
-                                      WHERE username = 'user111' and date > #{Time.new.strftime('%Y-%m-%d')}") %>
-
-  <% if(@checkbookings).equal?([])%>
-      <h1> One user just can book a room unless you release your room </h1>
-
-  <%else%>
-
   <h2>Please fill the form to book a room</h2>
     <div class="row">
       <div class="col-md-6 col-md-offset-3">
 
       <%= form_for @newbooking do|f| %>
                 <%= f.label :room_id %>
-                <%= f.text_field :room_id %>
+                <%= f.select :room_id, @roomids %>
 
-                <%= f.label :username %>
-                <%= f.text_field :username %>
-
+                <%= f.label :name %>
+                <%= f.text_field :name %>
 
                 <%= f.label :Date %>
                 <%= f.date_select :date %>
@@ -67,7 +57,7 @@
         </div>
       </div>
 
-  <% end %>
+
 </body>
 
 <%= link_to 'Back to Search Rooms', search_room_url %>
