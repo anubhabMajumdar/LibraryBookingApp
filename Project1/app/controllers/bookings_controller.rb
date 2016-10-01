@@ -28,9 +28,8 @@ end
   # GET /bookings/1
   # GET /bookings/1.json
   def show
-    admin="admin"
-    sql="select * from bookings"# where username ='#{admin}'"
-    @showing_booking=Booking.find_by_sql(sql)
+  	user=User.find(session[:user_id]).email    
+    @showing_booking=Booking.where("name =?",user)
   end
 
   # GET /bookings/new
@@ -54,23 +53,29 @@ end
   end
 
   def release_room
-    current_time=Time.new
-    admin="admin"
-    sql="select * from bookings where username ='#{admin}'and date >='#{current_time}'"
-    @bookings=Booking.find_by_sql(sql)
+    current_date=Time.new.strftime('%Y-%m-%d')
+    current_time=Time.new.strftime('%H:%M:%S')
+    user=User.find(session[:user_id]).email
+    @bookings=Booking.where("name = ? and (data > ? or (endtime >= ? and data =?))",user,current_date,current_time,current_date)
     ##debugger
 
   end
 
   def release
     current_time=Time.new
+    current_date=current_time.strftime('%Y-%m-%d')
+    current_timeout=current_time.strftime('%H:%M:%S')#the time of release
     @recordbookings = Booking.find(params[:format])
-    hours=current_time.hour
-    minute=current_time.min
-    timeslot=hours*2+minute/30
-    @recordbookings.endtime=timeslot
-    @recordbookings.update(entime: timeslot)
-    redirect_to show_bookings_path
+    #the date after today
+    if Date.parse(@recordbookings.data.strftime('%Y-%m-%d')) < Date.parse(Time.new.strftime('%Y-%m-%d'))
+    	@recordbookings.destory
+    #the time before starttime 
+    elsif Time.parse(@recordbookings.starttime.strftime('%H:%M:%S')) >Time.parse(Time.new.strftime('%H:%M:%S'))
+    	@recordbookings.destory
+    #the release time
+    else 
+    	endtime=timeslot(current_timeout)
+    end
 
   end
 
@@ -99,19 +104,6 @@ end
     redirect_to bookings_path
   end
 
-
- def save_room
-   #obtain username
-    @newbooking = Booking.new(booking_params)
-    @newbooking.bookday="2016-08-09"##how to store bookday
-    @newbooking.username="user"
-    #debugger
-    if @newbooking.save
-       puts 'Booking was successfully created.'
-       redirect_to show_bookings_path
-    end
-
- end
 
   # POST /bookings
   # POST /bookings.json
@@ -153,8 +145,6 @@ end
     #--------------
     
     @bookingrecord=Booking.where("room_id= ? and date = ?",booking_params[:room_id],@booking.date)
-
-
 
     #-------------
     #<begin> edited by Lei Zhang
@@ -247,4 +237,16 @@ end
         end#while
         return true
     end#function
+
+    def timeslot(current_timeout)
+
+    end
+
+    def timeslot_constrain()
+
+    end
+
+    def bookday_constrain
+    	
+    end
 end
