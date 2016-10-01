@@ -38,10 +38,10 @@
       <%= form_for @newbooking do|f| %>
                 <%= f.label :room_id %>
                 <%= f.select :room_id, @roomids %>
-
+                <% if @loginuser.Admin%>
                 <%= f.label :name %>
-                <%= f.text_field :name %>
-
+                <%= f.select :name, @users %>
+                <% end %>
                 <%= f.label :Date %>
                 <%= f.date_select :date %>
 

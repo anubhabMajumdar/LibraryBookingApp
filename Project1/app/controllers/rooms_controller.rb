@@ -62,6 +62,7 @@ class RoomsController < ApplicationController
   # DELETE /rooms/1.json
   def destroy
     set_room
+    
     @room.destroy
     flash[:success] = "Room successfully removed"
     redirect_to rooms_path

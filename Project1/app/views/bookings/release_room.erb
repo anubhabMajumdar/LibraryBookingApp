@@ -18,11 +18,8 @@
         <td><%= booking.date.strftime('%Y-%m-%d') %></td>
         <td><%= booking.starttime %></td>
         <td><%= booking.endtime %></td>
-
-        <%if Date.parse(booking.date.strftime('%Y-%m-%d'))==Date.parse(Time.new.strftime('%Y-%m-%d'))%>
-            <td><%=link_to 'release', release_room_path(booking), method: :POST, data: {confirm: "Releasing room?"}%></td>
-        <% elsif Date.parse(booking.date.strftime('%Y-%m-%d'))>=Date.parse(Time.new.strftime('%Y-%m-%d'))%>
-            <td><%= link_to 'cancel', cancel_path(booking), method: :POST, data: { confirm: "Are you sure to cancel it?" }%></td>
+        <% if Date.parse(booking.date.strftime('%Y-%m-%d'))>=Date.parse(Time.new.strftime('%Y-%m-%d'))%>
+            <td><%= link_to 'cancel', release_room_path(booking), method: :POST, data: { confirm: "Are you sure to cancel it?" }%></td>
         <% end %>
       </tr>
   <% end %>
