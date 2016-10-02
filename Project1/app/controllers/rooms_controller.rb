@@ -62,8 +62,15 @@ class RoomsController < ApplicationController
   # DELETE /rooms/1.json
   def destroy
     set_room
+    current_time=Time.new.strftime('%Y-%m-%d %H:%M:%S')
+    @record=Booking.where("room_id= ? and starttime > ?",@room.room_id,current_time)
+    @record.each do |booking|
+    booking.destroy
+    end
     
+    debugger
     @room.destroy
+
     flash[:success] = "Room successfully removed"
     redirect_to rooms_path
 

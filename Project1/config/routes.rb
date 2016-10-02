@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :bookings
+  get 'show' => 'bookings#show'
   get 'search_room' =>'bookings#search_room'
   post 'search_room', to: 'bookings#search'
   get 'release_room' =>'bookings#release_room'

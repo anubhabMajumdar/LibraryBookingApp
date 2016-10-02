@@ -19,11 +19,11 @@
   <% @showing_booking.each do |booking| %>
       <tr>
         <td><%= booking.room_id %></td>
-        <td><%= booking.username %></td>
+        <td><%= booking.name %></td>
         <td><%= booking.bookday %></td>
         <td><%= booking.date.strftime('%Y-%m-%d') %></td>
-        <td><%= booking.starttime %></td>
-        <td><%= booking.endtime %></td>
+        <td><%= booking.starttime.strftime('%H:%M:%S') %></td>
+        <td><%= booking.endtime.strftime('%H:%M:%S') %></td>
       </tr>
   <% end %>
   </tbody>

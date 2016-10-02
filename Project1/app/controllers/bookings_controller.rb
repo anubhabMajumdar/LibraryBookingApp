@@ -49,10 +49,11 @@ end
   end
 
   def delete_room
-    
+
   end
 ######release room
   def release_room
+    
     current_time=Time.new
     current_date=current_time.strftime('%Y-%m-%d')
     user=User.find(session[:user_id]).email
@@ -164,7 +165,9 @@ end
     elsif (@booking.starttime <= Time.new) ||((Time.parse(@booking.bookday.strftime('%Y-%m-%d'))-Time.parse(Time.new.strftime('%Y-%m-%d'))).round/(3600*24)>7)
       flash[:danger] = "The time period is not correct"
       redirect_to bookings_path
-    else
+    elsif (flag==0)&&( not (bookroom_constrain(@record,@booking.starttime,@booking.endtime)))
+      flash[:danger] = "A library member can reserve only one room at a particular date and time"
+      redirect_to bookings_path
       # respond_to do |format|
       #    if @booking.save
       #     format.html { redirect_to @booking, notice: 'Booking was successfully created.' }
@@ -257,7 +260,24 @@ end
 
  
 
-    def bookroom_constrain()
-    	
+    def bookroom_constrain(record,starttime,endtime)
+    	  timeslot=Array.new(48,0)
+        record.each do |book|
+        startindex=(book.starttime.hour)*2+(book.starttime.min)/30
+        endindex=(book.endtime.hour)*2+(book.endtime.min)/30
+        while startindex<endindex
+          timeslot[startindex]=1
+          startindex=startindex+1
+        end
+        end
+        insertstart=(starttime.hour*2+starttime.min)/30
+        insertend=(endtime.hour)*2+(endtime.min)/30
+        while insertstart<insertend
+              if timeslot[insertstart]!=0
+                return false
+              end
+              insertstart=insertstart+1
+        end#while
+        return true
     end
 end
