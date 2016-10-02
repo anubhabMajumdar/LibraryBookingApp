@@ -53,7 +53,7 @@ end
   end
 ######release room
   def release_room
-    
+
     current_time=Time.new
     current_date=current_time.strftime('%Y-%m-%d')
     user=User.find(session[:user_id]).email
@@ -68,14 +68,17 @@ end
     current_date=current_time.strftime('%Y-%m-%d')
     current_timeout=current_time.strftime('%H:%M:%S')#the time of release
     @recordbookings = Booking.find(params[:format])
+    debugger
     #the time before starttime 
     if @recordbookings.starttime > current_time
+      debugger
     	@recordbookings.destory
     #the release time
     else 
     	endtime=timeslot(current_time)
       @recordbookings.update(endtime: endtime)
     end
+    debugger
     redirect_to release_room_path
 
   end
@@ -119,22 +122,6 @@ end
     end
      #name is in fact the email of the person who books the room (By Lei Zhang)
      @booking.bookday=Time.new
-       #respond_to do |format|
-    #if booking_params["date(2i)"].length==1
-    #  bookdate=booking_params["date(1i)"]+"-0"+booking_params["date(2i)"]+"-"+booking_params["date(3i)"]+" 00:00:00"
-    #else
-    #  bookdate=booking_params["date(1i)"]+"-"+booking_params["date(2i)"]+"-"+booking_params["date(3i)"]+" 00:00:00"
-    #end
-
-
-    #-------------
-    #Cannot undertand what the following two lines of code mean (Lei Zhang)
-    #@booking.endtime = @bookdate.endtime+":00"
-    #@booking.starttime = @bookdate.starttime+":00"
-    #-------------
-
-
-    #--------------
     #<begin> edit by Lei Zhang
     starttime_string = booking_params[:starttime]
     if starttime_string.length == 4
@@ -152,6 +139,7 @@ end
     @bookingrecord=Booking.where("room_id= ? and date = ?",booking_params[:room_id],@booking.date)
     @record=Booking.where("name=? and date = ?", @booking.name,@booking.date)
     debugger
+    #debugger
     #-------------
     #<begin> edited by Lei Zhang
     #debugger
@@ -168,6 +156,7 @@ end
     elsif (flag==0)&&( not (bookroom_constrain(@record,@booking.starttime,@booking.endtime)))
       flash[:danger] = "A library member can reserve only one room at a particular date and time"
       redirect_to bookings_path
+    else
       # respond_to do |format|
       #    if @booking.save
       #     format.html { redirect_to @booking, notice: 'Booking was successfully created.' }

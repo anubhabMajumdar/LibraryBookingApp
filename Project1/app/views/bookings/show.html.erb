@@ -22,8 +22,8 @@
         <td><%= booking.name %></td>
         <td><%= booking.bookday %></td>
         <td><%= booking.date.strftime('%Y-%m-%d') %></td>
-        <td><%= booking.starttime.strftime('%H:%M:%S') %></td>
-        <td><%= booking.endtime.strftime('%H:%M:%S') %></td>
+        <td><%= booking.starttime.strftime('#####%Y-%m-%d %H:%M:%S') %></td>
+        <td><%= booking.endtime.strftime('######%Y-%m-%d %H:%M:%S') %></td>
       </tr>
   <% end %>
   </tbody>
