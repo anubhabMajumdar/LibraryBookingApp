@@ -131,9 +131,10 @@ end
     if endtime_string.length == 4
         endtime_string = "0" + endtime_string
     end
-
+    
     @booking.endtime = Time.parse("%04d-%02d-%02d %s:00" %[booking_params["date(1i)"], booking_params["date(2i)"], booking_params["date(3i)"], endtime_string])
     @booking.starttime = Time.parse("%04d-%02d-%02d %s:00" %[booking_params["date(1i)"], booking_params["date(2i)"], booking_params["date(3i)"], starttime_string])
+    debugger
     #<end> edited by Lei Zhang
     #--------------
     @bookingrecord=Booking.where("room_id= ? and date = ?",booking_params[:room_id],@booking.date)

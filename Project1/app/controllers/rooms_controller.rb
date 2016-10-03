@@ -67,8 +67,6 @@ class RoomsController < ApplicationController
     @record.each do |booking|
     booking.destroy
     end
-    
-    debugger
     @room.destroy
 
     flash[:success] = "Room successfully removed"
