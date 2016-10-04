@@ -44,13 +44,7 @@ end
 
   end
 
-  def delete_user
 
-  end
-
-  def delete_room
-
-  end
 ######release room
   def release_room
 
@@ -71,8 +65,7 @@ end
     debugger
     #the time before starttime 
     if @recordbookings.starttime > current_time
-      debugger
-    	@recordbookings.destory
+    	@recordbookings.destroy
     #the release time
     else 
     	endtime=timeslot(current_time)
