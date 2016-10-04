@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   # get 'sessions/new'
   root  'sessions#new'
   resources :rooms
+  get 'view_room_history' =>'rooms#view_room_history'
 
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

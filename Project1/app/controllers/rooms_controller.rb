@@ -18,6 +18,11 @@ class RoomsController < ApplicationController
     @room = Room.new
   end
 
+  def view_room_history
+     @room=Room.find(params[:id])
+     @booking=Booking.where("room_id =?", @room.room_id)
+  end
+
   # GET /rooms/1/edit
   def edit
     @room=Room.find(params[:id])
