@@ -5,8 +5,8 @@ class CreateBookings < ActiveRecord::Migration[5.0]
       t.string :name
       t.timestamp :bookday
       t.datetime :date
-      t.time :starttime
-      t.time :endtime
+      t.datetime :starttime
+      t.datetime :endtime
       t.timestamps
     end
   end
