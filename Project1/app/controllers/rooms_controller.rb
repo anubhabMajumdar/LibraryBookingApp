@@ -19,8 +19,7 @@ class RoomsController < ApplicationController
   end
 
   def view_room_history
-    #debugger
-    @booking=Booking.where("room_id =?", params[:id])
+    @booking=Booking.where("room_id =?", Room.find(params[:id]).room_id)
     #this means all booking records of this room
     #redirect_to view_room_history_path
   end
