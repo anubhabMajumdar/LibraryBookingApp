@@ -62,7 +62,7 @@ end
     current_date=current_time.strftime('%Y-%m-%d')
     current_timeout=current_time.strftime('%H:%M:%S')#the time of release
     @recordbookings = Booking.find(params[:format])
-    debugger
+    #debugger
     #the time before starttime 
     if @recordbookings.starttime > current_time
     	@recordbookings.destroy
@@ -71,7 +71,7 @@ end
     	endtime=timeslot(current_time)
       @recordbookings.update(endtime: endtime)
     end
-    debugger
+    #debugger
     redirect_to release_room_path
 
   end
@@ -110,6 +110,7 @@ end
     @booking = Booking.new(booking_params)
     @user=User.find(session[:user_id])
     if not @user.Admin
+       debugger
        @booking.name = User.find(session[:user_id]).email
        flag=1
     end
@@ -127,13 +128,11 @@ end
     
     @booking.endtime = Time.parse("%04d-%02d-%02d %s:00" %[booking_params["date(1i)"], booking_params["date(2i)"], booking_params["date(3i)"], endtime_string])
     @booking.starttime = Time.parse("%04d-%02d-%02d %s:00" %[booking_params["date(1i)"], booking_params["date(2i)"], booking_params["date(3i)"], starttime_string])
-    debugger
+    #debugger
     #<end> edited by Lei Zhang
     #--------------
     @bookingrecord=Booking.where("room_id= ? and date = ?",booking_params[:room_id],@booking.date)
     @record=Booking.where("name=? and date = ?", @booking.name,@booking.date)
-    debugger
-    #debugger
     #-------------
     #<begin> edited by Lei Zhang
     #debugger
@@ -147,7 +146,7 @@ end
     elsif (@booking.starttime <= Time.new) ||((Time.parse(@booking.bookday.strftime('%Y-%m-%d'))-Time.parse(Time.new.strftime('%Y-%m-%d'))).round/(3600*24)>7)
       flash[:danger] = "The time period is not correct"
       redirect_to bookings_path
-    elsif (flag==0)&&( not (bookroom_constrain(@record,@booking.starttime,@booking.endtime)))
+    elsif (flag==1)&&( not (bookroom_constrain(@record,@booking.starttime,@booking.endtime)))
       flash[:danger] = "A library member can reserve only one room at a particular date and time"
       redirect_to bookings_path
     else
