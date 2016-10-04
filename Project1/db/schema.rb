@@ -17,8 +17,8 @@ ActiveRecord::Schema.define(version: 20160919034157) do
     t.string   "name"
     t.datetime "bookday"
     t.datetime "date"
-    t.time     "starttime"
-    t.time     "endtime"
+    t.datetime "starttime"
+    t.datetime "endtime"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

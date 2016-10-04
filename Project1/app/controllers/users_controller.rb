@@ -105,7 +105,14 @@ class UsersController < ApplicationController
   end
 
   def remove_user
+
     @user_for_deletion = User.find_by(email: params[:email])
+    
+    current_time=Time.new.strftime('%Y-%m-%d %H:%M:%S')
+    @record=Booking.where("name= ? and starttime > ?",@user_for_deletion.name,current_time)
+    @record.each do |booking|
+    booking.destroy
+    end
     if @user_for_deletion.destroy
       flash.now[:success] = "#{@user_for_deletion.name} successfully removed as user"
     else

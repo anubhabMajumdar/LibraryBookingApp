@@ -12,6 +12,7 @@
           <%= link_to 'Details', room %>&nbsp&nbsp&nbsp&nbsp
           <%= link_to 'Edit', edit_room_path(room) %>&nbsp&nbsp&nbsp&nbsp
           <%= link_to 'Delete', room, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <%= link_to 'View_room_history', view_room_history_path(room)%>
       </li>
     <% end %>
 

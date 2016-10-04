@@ -23,14 +23,15 @@ class BookingsController < ApplicationController
         end
     end
     @roomids = Room.all.pluck(:room_id)
+    @loginuser=User.find(session[:user_id])
+    @users=User.all.pluck(:email)
     # #debugger
 end
   # GET /bookings/1
   # GET /bookings/1.json
   def show
-    admin="admin"
-    sql="select * from bookings"# where username ='#{admin}'"
-    @showing_booking=Booking.find_by_sql(sql)
+  	user=User.find(session[:user_id]).email    
+    @showing_booking=Booking.where("name =?",user)
   end
 
   # GET /bookings/new
@@ -44,40 +45,41 @@ end
   end
 
 
-  def cancel
-    @bookings_cancel= Booking.find(params[:format])
-    @bookings_cancel.destroy
-    redirect_to release_room_path
-
-
-
-  end
-
+######release room
   def release_room
+
     current_time=Time.new
-    admin="admin"
-    sql="select * from bookings where username ='#{admin}'and date >='#{current_time}'"
-    @bookings=Booking.find_by_sql(sql)
+    current_date=current_time.strftime('%Y-%m-%d')
+    user=User.find(session[:user_id]).email
+    @bookings=Booking.where("name = ? and endtime >= ?",user,current_time)
     ##debugger
 
   end
 
+
   def release
     current_time=Time.new
+    current_date=current_time.strftime('%Y-%m-%d')
+    current_timeout=current_time.strftime('%H:%M:%S')#the time of release
     @recordbookings = Booking.find(params[:format])
-    hours=current_time.hour
-    minute=current_time.min
-    timeslot=hours*2+minute/30
-    @recordbookings.endtime=timeslot
-    @recordbookings.update(entime: timeslot)
-    redirect_to show_bookings_path
+    #debugger
+    #the time before starttime 
+    if @recordbookings.starttime > current_time
+    	@recordbookings.destroy
+    #the release time
+    else 
+    	endtime=timeslot(current_time)
+      @recordbookings.update(endtime: endtime)
+    end
+    #debugger
+    redirect_to release_room_path
 
   end
 
+######search room by some keywords
   def search_room
-
     @rooms=Room.new
-    # @all_room_id = Room.all.pluck(:id)
+    
 
     # #debugger
   end
@@ -100,43 +102,20 @@ end
   end
 
 
- def save_room
-   #obtain username
-    @newbooking = Booking.new(booking_params)
-    @newbooking.bookday="2016-08-09"##how to store bookday
-    @newbooking.username="user"
-    #debugger
-    if @newbooking.save
-       puts 'Booking was successfully created.'
-       redirect_to show_bookings_path
-    end
-
- end
-
   # POST /bookings
   # POST /bookings.json
 
   def create
-
+    flag=0
     @booking = Booking.new(booking_params)
-     @booking.name = User.find(session[:user_id]).email
+    @user=User.find(session[:user_id])
+    if not @user.Admin
+       debugger
+       @booking.name = User.find(session[:user_id]).email
+       flag=1
+    end
      #name is in fact the email of the person who books the room (By Lei Zhang)
      @booking.bookday=Time.new
-       #respond_to do |format|
-    #if booking_params["date(2i)"].length==1
-    #  bookdate=booking_params["date(1i)"]+"-0"+booking_params["date(2i)"]+"-"+booking_params["date(3i)"]+" 00:00:00"
-    #else
-    #  bookdate=booking_params["date(1i)"]+"-"+booking_params["date(2i)"]+"-"+booking_params["date(3i)"]+" 00:00:00"
-    #end
-
-    #-------------
-    #Cannot undertand what the following two lines of code mean (Lei Zhang)
-    #@booking.endtime = @bookdate.endtime+":00"
-    #@booking.starttime = @bookdate.starttime+":00"
-    #-------------
-
-
-    #--------------
     #<begin> edit by Lei Zhang
     starttime_string = booking_params[:starttime]
     if starttime_string.length == 4
@@ -146,25 +125,29 @@ end
     if endtime_string.length == 4
         endtime_string = "0" + endtime_string
     end
-
+    
     @booking.endtime = Time.parse("%04d-%02d-%02d %s:00" %[booking_params["date(1i)"], booking_params["date(2i)"], booking_params["date(3i)"], endtime_string])
     @booking.starttime = Time.parse("%04d-%02d-%02d %s:00" %[booking_params["date(1i)"], booking_params["date(2i)"], booking_params["date(3i)"], starttime_string])
+    #debugger
     #<end> edited by Lei Zhang
     #--------------
-    
     @bookingrecord=Booking.where("room_id= ? and date = ?",booking_params[:room_id],@booking.date)
-
-
-
+    @record=Booking.where("name=? and date = ?", @booking.name,@booking.date)
     #-------------
     #<begin> edited by Lei Zhang
     #debugger
     duration = @booking.endtime - @booking.starttime
-    if ((duration/1800 > 4) || (duration<0))
+    if ((duration/1800 > 4) || (duration<=0))
       flash[:danger] = "Cannot book for more that 2 hours or less than 0 hours"
       redirect_to bookings_path
     elsif not (timeconstrain(@bookingrecord,@booking))
       flash[:danger] = "The room is booked during that period. Try another room or another time"
+      redirect_to bookings_path
+    elsif (@booking.starttime <= Time.new) ||((Time.parse(@booking.bookday.strftime('%Y-%m-%d'))-Time.parse(Time.new.strftime('%Y-%m-%d'))).round/(3600*24)>7)
+      flash[:danger] = "The time period is not correct"
+      redirect_to bookings_path
+    elsif (flag==1)&&( not (bookroom_constrain(@record,@booking.starttime,@booking.endtime)))
+      flash[:danger] = "A library member can reserve only one room at a particular date and time"
       redirect_to bookings_path
     else
       # respond_to do |format|
@@ -177,6 +160,7 @@ end
       #    end
       # end
       if @booking.save
+        #debugger
         flash[:success] = "Room successfully booked"
       # redirect_to bookings_path
         redirect_to bookings_path
@@ -220,7 +204,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def booking_params
-      params.require(:booking).permit(:room_id, :username, :string, :bookday, :date, :starttime, :endtime)
+      params.require(:booking).permit(:room_id, :name, :string, :bookday, :date, :starttime, :endtime)
     end
 
     def room_params
@@ -247,4 +231,35 @@ end
         end#while
         return true
     end#function
+
+    def timeslot(current_time)
+        current_time+=60-current_time.sec
+        if (current_time.min % 30) != 0
+          current_time+=60*(30-current_time.min%30)
+        end
+        return current_time
+    end
+
+ 
+
+    def bookroom_constrain(record,starttime,endtime)
+    	  timeslot=Array.new(48,0)
+        record.each do |book|
+        startindex=(book.starttime.hour)*2+(book.starttime.min)/30
+        endindex=(book.endtime.hour)*2+(book.endtime.min)/30
+        while startindex<endindex
+          timeslot[startindex]=1
+          startindex=startindex+1
+        end
+        end
+        insertstart=(starttime.hour*2+starttime.min)/30
+        insertend=(endtime.hour)*2+(endtime.min)/30
+        while insertstart<insertend
+              if timeslot[insertstart]!=0
+                return false
+              end
+              insertstart=insertstart+1
+        end#while
+        return true
+    end
 end

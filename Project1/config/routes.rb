@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :bookings
+  get 'show' => 'bookings#show'
   get 'search_room' =>'bookings#search_room'
   post 'search_room', to: 'bookings#search'
   get 'release_room' =>'bookings#release_room'
@@ -9,7 +10,9 @@ Rails.application.routes.draw do
 
   # get 'sessions/new'
   root  'sessions#new'
+
   resources :rooms
+  get 'view_room_history/:id', to: 'rooms#view_room_history', as: "view_room_history"
 
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
