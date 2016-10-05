@@ -48,4 +48,6 @@ Rails.application.routes.draw do
 
   get       '/send_mail',               to: 'bookings#send_mail'
   post      '/dispatch_mail',           to: 'bookings#dispatch_mail'
+
+  post       '/user_booking_history',            to: 'users#user_booking_history'
 end

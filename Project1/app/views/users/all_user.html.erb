@@ -5,7 +5,7 @@
       <li class="list-group-item">
         <%= each_user.name %>&nbsp&nbsp&nbsp&nbsp
         <%= each_user.email %>&nbsp&nbsp&nbsp&nbsp
-        <%= link_to "Reservation History", "#" , method: "get" %>&nbsp&nbsp&nbsp&nbsp
+        <%= link_to "Reservation History", user_booking_history_url(:email => each_user.email) , method: "post" %>&nbsp&nbsp&nbsp&nbsp
         <%= link_to "Remove user", remove_user_url(:email => each_user.email) , method: "post", data: { confirm: 'Are you sure?' } %>
       </li>
   <% end %>
