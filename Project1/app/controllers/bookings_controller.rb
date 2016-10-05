@@ -113,7 +113,7 @@ class BookingsController < ApplicationController
     end
     #debugger
     if User.find(session[:user_id]).Admin
-      redirect_to rooms_url
+      redirect_to all_user_url
     else
       redirect_to my_booking_history_url
     end
