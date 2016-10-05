@@ -232,10 +232,11 @@ class BookingsController < ApplicationController
 
   def send_mail
 
+
   end
 
   def dispatch_mail
-    mail(to: params[:email], subject: 'Sample Email')
+    UsermailerMailer.welcome_email(params[:email]).deliver_now
     redirect_to send_mail_path
   end
 
