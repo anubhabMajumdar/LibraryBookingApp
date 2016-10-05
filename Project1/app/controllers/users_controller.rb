@@ -18,8 +18,13 @@ class UsersController < ApplicationController
     @user.Admin = false
     if @user.save
       flash[:success] = ("Registration successful " + @user.name)
-      logging_in(@user.id)
-      redirect_to user_url(@user)
+      if User.find(session[:user_id]).Admin
+        redirect_to admin_manage_user_path
+      else
+        logging_in(@user.id)
+        redirect_to user_url(@user)
+      end
+
     else
       render 'new'
     end
@@ -95,10 +100,21 @@ class UsersController < ApplicationController
   end
 
   def admin_manage_room
+    @user = User.find(session[:user_id])
   end
 
   def admin_manage_user
   end
+
+  def user_manage_room
+    @user = User.find(session[:user_id])
+  end
+
+  def my_booking_history
+    @user = User.find(session[:user_id])
+    @my_booking = Booking.where(name: @user.email).all
+  end
+
 
   def all_user
     @all_users = User.where(Admin: false).all

@@ -15,20 +15,32 @@
     </div>
   </div>
 
+
+
   <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-    <%@bookings.each do |booking| %>
-      <li class="list-group-item">
-
-        <%= booking.room_id %>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <%= booking.size %>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <%= booking.building %>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-
-
-      </li>
-    <% end %>
-      </div>
+    <div class="col-md-0 col-md-offset-1">
+        <table>
+          <tr>
+            <th>Room</th>
+            <% (0..23).each do |i| %>
+              <th colspan="2"><%=i%></th>
+            <%end%>
+          </tr>
+        <%@bookings.each do |booking| %>
+            <tr>
+              <th><%= booking.room_id %></th>
+              <% (1..48).each do |i| %>
+                  <% if i%2==0 %>
+                    <th bgcolor="#00FF00"><%="30"%></th>
+                  <% else %>
+                    <th bgcolor="#00FF00"><%="00"%></th>
+                  <%end%>
+              <%end%>
+            </tr>
+          <% end %>
+      </table>
     </div>
+  </div>
 
 
   <h2>Please fill the form to book a room</h2>

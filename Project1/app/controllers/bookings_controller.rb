@@ -9,9 +9,17 @@ class BookingsController < ApplicationController
   # GET /bookings.json
   def index
     @newbooking=Booking.new
+    @all_bookings = Booking.new
     if @@req_rooms
       @bookings=@@req_rooms
-    # puts @tan
+
+      room_ids = []
+      @bookings.each do |i|
+        room_ids.push(i.room_id)
+      end
+      @all_bookings = Booking.where(room_id: room_ids).all
+      # debugger
+
     else
       @bookings = Room.new
     end
@@ -26,7 +34,7 @@ class BookingsController < ApplicationController
     @loginuser=User.find(session[:user_id])
     @users=User.all.pluck(:email)
     # #debugger
-end
+  end
   # GET /bookings/1
   # GET /bookings/1.json
   def show
@@ -72,7 +80,12 @@ end
       @recordbookings.update(endtime: endtime)
     end
     #debugger
-    redirect_to release_room_path
+    if User.find(session[:user_id]).Admin
+      redirect_to rooms_url
+    else
+      redirect_to my_booking_history_url
+    end
+
 
   end
 
@@ -110,7 +123,7 @@ end
     @booking = Booking.new(booking_params)
     @user=User.find(session[:user_id])
     if not @user.Admin
-       debugger
+       # debugger
        @booking.name = User.find(session[:user_id]).email
        flag=1
     end

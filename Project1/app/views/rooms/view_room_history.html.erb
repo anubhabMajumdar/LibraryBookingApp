@@ -1,30 +1,47 @@
 <p id="notice"><%= notice %></p>
 
-<h1> the booking history of room</h1>
-
-<table>
-  <thead>
-  <tr>
-    <th>RoomID</th>
-    <th>Username</th>
-    <th>Bookday</th>
-    <th>Date</th>
-    <th>Starttime</th>
-    <th>Endtime</th>
-    <th colspan="3"></th>
-  </tr>
-  </thead>
-
-  <tbody>
-  <% @booking.each do |booking| %>
+<h1> Booking history</h1>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <table class="details">
+      <thead>
       <tr>
-        <td><%= booking.room_id %></td>
-        <td><%= booking.name %></td>
-        <td><%= booking.bookday %></td>
-        <td><%= booking.date.strftime('%Y-%m-%d') %></td>
-        <td><%= booking.starttime.strftime('%H:%M:%S') %></td>
-        <td><%= booking.endtime.strftime('%H:%M:%S') %></td>
+        <th>RoomID</th>
+        <% if @user.Admin%>
+          <th>Username</th>
+          <th>Bookday</th>
+        <%end%>
+        <th>Date</th>
+        <th>Starttime</th>
+        <th>Endtime</th>
+        <% if @user.Admin%>
+          <th> </th>
+        <%end%>
+        <!--<th colspan="3"></th>-->
       </tr>
-  <% end %>
-  </tbody>
-</table>
+      </thead>
+
+      <tbody>
+      <% @booking.each do |booking| %>
+          <tr>
+            <td><%= booking.room_id %></td>
+            <% if @user.Admin%>
+              <td><%= booking.name %></td>
+              <td><%= booking.bookday %></td>
+            <%end%>
+            <td><%= booking.date.strftime('%Y-%m-%d') %></td>
+            <td><%= booking.starttime.strftime('%H:%M:%S') %></td>
+            <td><%= booking.endtime.strftime('%H:%M:%S') %></td>
+            <% if @user.Admin%>
+              <% if Date.parse(booking.date.strftime('%Y-%m-%d'))>=Date.parse(Time.new.strftime('%Y-%m-%d'))%>
+                  <td><%= link_to 'cancel', release_room_path(booking), method: :POST, data: { confirm: "Are you sure to cancel it?" }%></td>
+              <% end %>
+            <%end%>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%= link_to 'Return to room list', rooms_url %></table>
