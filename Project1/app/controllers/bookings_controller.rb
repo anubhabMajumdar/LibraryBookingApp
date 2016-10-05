@@ -4,14 +4,39 @@ class BookingsController < ApplicationController
   @@req_rooms=nil
   require'time'
   @@hello=nil
+  @@bookinfomail=nil
+
   # @@curuser = User.find(session[:user_id])
   # GET /bookings
   # GET /bookings.json
   def index
     @newbooking=Booking.new
+    @all_bookings = Booking.new
     if @@req_rooms
       @bookings=@@req_rooms
-    # puts @tan
+
+      room_ids = []
+      @bookings.each do |i|
+        room_ids.push(i.room_id)
+      end
+      @all_bookings = Booking.where(room_id: room_ids).all
+      # debugger
+
+      @booking_matrix = []
+      cur_date = Time.now
+      # temp = "%04d-%02d-%02d 00:00:00" %[cur_date.year, cur_date.month, cur_date.day]
+
+      (1..7).each do |k|
+        room_ids.each do |er|
+          temp = "%04d-%02d-%02d 00:00:00" %[cur_date.year, cur_date.month, cur_date.day]
+          temparr = @all_bookings.where(room_id: er, date: temp).all
+          @booking_matrix.push(get_array(temparr))
+
+        end
+        cur_date = cur_date + (24*60*60)
+      end
+
+      # debugger
     else
       @bookings = Room.new
     end
@@ -26,7 +51,21 @@ class BookingsController < ApplicationController
     @loginuser=User.find(session[:user_id])
     @users=User.all.pluck(:email)
     # #debugger
-end
+  end
+
+  def get_array(all_bookings)
+    timeslot=Array.new(48,0)
+    all_bookings.each do |book|
+      startindex=(book.starttime.hour)*2+(book.starttime.min)/30
+      endindex=(book.endtime.hour)*2+(book.endtime.min)/30
+      while startindex<endindex
+        timeslot[startindex]=1
+        startindex=startindex+1
+      end
+    end
+    return timeslot
+  end
+
   # GET /bookings/1
   # GET /bookings/1.json
   def show
@@ -73,7 +112,12 @@ end
       @recordbookings.update(endtime: endtime)
     end
     #debugger
-    redirect_to release_room_path
+    if User.find(session[:user_id]).Admin
+      redirect_to rooms_url
+    else
+      redirect_to my_booking_history_url
+    end
+
 
   end
 
@@ -83,6 +127,21 @@ end
     
 
     # #debugger
+  end
+
+  def room_availability_by_date
+
+    @req_date = booking_date
+    temp = "%04d-%02d-%02d 00:00:00" %[@req_date["date(1i)"], @req_date["date(2i)"], @req_date["date(3i)"]]
+
+    @bookings=@@req_rooms
+    room_ids = []
+    @bookings.each do |i|
+      room_ids.push(i.room_id)
+    end
+    @all_bookings = Booking.where(room_id: room_ids, date: temp).all
+
+
   end
 
 
@@ -108,10 +167,11 @@ end
 
   def create
     flag=0
+    @@bookinfomail = Booking.new(booking_params)
     @booking = Booking.new(booking_params)
     @user=User.find(session[:user_id])
     if not @user.Admin
-       debugger
+       # debugger
        @booking.name = User.find(session[:user_id]).email
        flag=1
     end
@@ -164,13 +224,27 @@ end
         #debugger
         flash[:success] = "Room successfully booked"
       # redirect_to bookings_path
-        redirect_to bookings_path
+      #   redirect_to bookings_path
+        redirect_to send_mail_path
       else
         flash[:danger] = "Cannot book room now. Please try again later"
         redirect_to bookings_path
       end
     end
  end
+
+
+  def send_mail
+
+  end
+
+  def dispatch_mail
+    # debugger
+    # UsermailerMailer.welcome_email(params[:email]).deliver_now
+    UsermailerMailer.notification_email(@@bookinfomail, params[:email]).deliver_now
+    redirect_to send_mail_path
+  end
+
 
   # PATCH/PUT /bookings/1
   # PATCH/PUT /bookings/1.json
@@ -206,6 +280,10 @@ end
     # Never trust parameters from the scary internet, only allow the white list through.
     def booking_params
       params.require(:booking).permit(:room_id, :name, :string, :bookday, :date, :starttime, :endtime)
+    end
+
+    def booking_date
+      params.require(:booking).permit(:date)
     end
 
     def room_params

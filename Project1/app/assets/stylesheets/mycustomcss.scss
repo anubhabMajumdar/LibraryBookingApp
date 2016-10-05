@@ -126,3 +126,18 @@ input {
     margin: 0 0 30px 0;
   }
 }
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  table-layout: fixed;
+  //padding: 2px;
+  width: 50px;
+  text-align: center;
+}
+
+table.details, th, td{
+  table-layout: auto;
+  padding: 10px;
+
+}

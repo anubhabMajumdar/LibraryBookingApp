@@ -5,6 +5,7 @@ class RoomsController < ApplicationController
   # GET /rooms.json
   def index
     @rooms = Room.all
+    @user = User.find(session[:user_id])
   end
 
   # GET /rooms/1
@@ -20,6 +21,7 @@ class RoomsController < ApplicationController
 
   def view_room_history
     @booking=Booking.where("room_id =?", Room.find(params[:id]).room_id)
+    @user = User.find(session[:user_id])
     #this means all booking records of this room
     #redirect_to view_room_history_path
   end
