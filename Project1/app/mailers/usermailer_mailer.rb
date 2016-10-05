@@ -7,4 +7,10 @@ class UsermailerMailer < ApplicationMailer
     mail(to: @email, subject: 'Welcome to My Awesome Site')
   end
 
+  def notification_email(booking, receiver)
+    @b = booking
+    mail(to: receiver, subject: 'Room book information')
+
+  end
+
 end

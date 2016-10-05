@@ -4,6 +4,8 @@ class BookingsController < ApplicationController
   @@req_rooms=nil
   require'time'
   @@hello=nil
+  @@bookinfomail=nil
+
   # @@curuser = User.find(session[:user_id])
   # GET /bookings
   # GET /bookings.json
@@ -164,6 +166,7 @@ class BookingsController < ApplicationController
 
   def create
     flag=0
+    @@bookinfomail = Booking.new(booking_params)
     @booking = Booking.new(booking_params)
     @user=User.find(session[:user_id])
     if not @user.Admin
@@ -232,11 +235,12 @@ class BookingsController < ApplicationController
 
   def send_mail
 
-
   end
 
   def dispatch_mail
-    UsermailerMailer.welcome_email(params[:email]).deliver_now
+    # debugger
+    # UsermailerMailer.welcome_email(params[:email]).deliver_now
+    UsermailerMailer.notification_email(@@bookinfomail, params[:email]).deliver_now
     redirect_to send_mail_path
   end
 
