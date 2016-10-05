@@ -143,7 +143,7 @@ end
     elsif not (timeconstrain(@bookingrecord,@booking))
       flash[:danger] = "The room is booked during that period. Try another room or another time"
       redirect_to bookings_path
-    elsif (@booking.starttime <= Time.new) ||((Time.parse(@booking.bookday.strftime('%Y-%m-%d'))-Time.parse(Time.new.strftime('%Y-%m-%d'))).round/(3600*24)>7)
+    elsif (@booking.starttime <= Time.new) ||((Time.parse(@booking.date.strftime('%Y-%m-%d'))-Time.parse(Time.new.strftime('%Y-%m-%d'))).round/(3600*24)>7)
       flash[:danger] = "The time period is not correct"
       redirect_to bookings_path
     elsif (flag==1)&&( not (bookroom_constrain(@record,@booking.starttime,@booking.endtime)))
