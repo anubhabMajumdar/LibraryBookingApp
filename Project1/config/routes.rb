@@ -43,4 +43,9 @@ Rails.application.routes.draw do
   get       '/search_room',          to: 'bookings#search_room'
   get       '/user_manage_room',      to: 'users#user_manage_room'
   get       '/my_booking_history',            to: 'users#my_booking_history'
+
+  post     '/room_availability_by_date',     to: 'bookings#room_availability_by_date'
+
+  get       '/send_mail',               to: 'bookings#send_mail'
+  post      '/dispatch_mail',           to: 'bookings#dispatch_mail'
 end

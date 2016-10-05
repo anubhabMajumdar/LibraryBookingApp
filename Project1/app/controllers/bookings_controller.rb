@@ -20,6 +20,21 @@ class BookingsController < ApplicationController
       @all_bookings = Booking.where(room_id: room_ids).all
       # debugger
 
+      @booking_matrix = []
+      cur_date = Time.now
+      # temp = "%04d-%02d-%02d 00:00:00" %[cur_date.year, cur_date.month, cur_date.day]
+
+      (1..7).each do |k|
+        room_ids.each do |er|
+          temp = "%04d-%02d-%02d 00:00:00" %[cur_date.year, cur_date.month, cur_date.day]
+          temparr = @all_bookings.where(room_id: er, date: temp).all
+          @booking_matrix.push(get_array(temparr))
+
+        end
+        cur_date = cur_date + (24*60*60)
+      end
+
+      # debugger
     else
       @bookings = Room.new
     end
@@ -35,6 +50,20 @@ class BookingsController < ApplicationController
     @users=User.all.pluck(:email)
     # #debugger
   end
+
+  def get_array(all_bookings)
+    timeslot=Array.new(48,0)
+    all_bookings.each do |book|
+      startindex=(book.starttime.hour)*2+(book.starttime.min)/30
+      endindex=(book.endtime.hour)*2+(book.endtime.min)/30
+      while startindex<endindex
+        timeslot[startindex]=1
+        startindex=startindex+1
+      end
+    end
+    return timeslot
+  end
+
   # GET /bookings/1
   # GET /bookings/1.json
   def show
@@ -95,6 +124,21 @@ class BookingsController < ApplicationController
     
 
     # #debugger
+  end
+
+  def room_availability_by_date
+
+    @req_date = booking_date
+    temp = "%04d-%02d-%02d 00:00:00" %[@req_date["date(1i)"], @req_date["date(2i)"], @req_date["date(3i)"]]
+
+    @bookings=@@req_rooms
+    room_ids = []
+    @bookings.each do |i|
+      room_ids.push(i.room_id)
+    end
+    @all_bookings = Booking.where(room_id: room_ids, date: temp).all
+
+
   end
 
 
@@ -176,13 +220,25 @@ class BookingsController < ApplicationController
         #debugger
         flash[:success] = "Room successfully booked"
       # redirect_to bookings_path
-        redirect_to bookings_path
+      #   redirect_to bookings_path
+        redirect_to send_mail_path
       else
         flash[:danger] = "Cannot book room now. Please try again later"
         redirect_to bookings_path
       end
     end
  end
+
+
+  def send_mail
+
+  end
+
+  def dispatch_mail
+    mail(to: params[:email], subject: 'Sample Email')
+    redirect_to send_mail_path
+  end
+
 
   # PATCH/PUT /bookings/1
   # PATCH/PUT /bookings/1.json
@@ -218,6 +274,10 @@ class BookingsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def booking_params
       params.require(:booking).permit(:room_id, :name, :string, :bookday, :date, :starttime, :endtime)
+    end
+
+    def booking_date
+      params.require(:booking).permit(:date)
     end
 
     def room_params
