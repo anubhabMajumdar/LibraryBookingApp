@@ -51,6 +51,7 @@ end
     current_time=Time.new
     current_date=current_time.strftime('%Y-%m-%d')
     user=User.find(session[:user_id]).email
+    #debugger
     @bookings=Booking.where("name = ? and endtime >= ?",user,current_time)
     ##debugger
 
@@ -221,7 +222,7 @@ end
           startindex=startindex+1
         end
         end
-        insertstart=(booking.starttime.hour*2+booking.starttime.min)/30
+        insertstart=(booking.starttime.hour)*2+(booking.starttime.min)/30
         insertend=(booking.endtime.hour)*2+(booking.endtime.min)/30
         while insertstart<insertend
               if timeslot[insertstart]!=0
@@ -252,7 +253,7 @@ end
           startindex=startindex+1
         end
         end
-        insertstart=(starttime.hour*2+starttime.min)/30
+        insertstart=(starttime.hour)*2+(starttime.min)/30
         insertend=(endtime.hour)*2+(endtime.min)/30
         while insertstart<insertend
               if timeslot[insertstart]!=0
