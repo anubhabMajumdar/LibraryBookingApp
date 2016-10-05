@@ -110,11 +110,15 @@ class UsersController < ApplicationController
     @user = User.find(session[:user_id])
   end
 
+  def user_booking_history
+    @mail = params[:email]
+    @my_booking = Booking.where(name: @mail).all
+  end
+
   def my_booking_history
     @user = User.find(session[:user_id])
     @my_booking = Booking.where(name: @user.email).all
   end
-
 
   def all_user
     @all_users = User.where(Admin: false).all
