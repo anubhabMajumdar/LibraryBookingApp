@@ -95,8 +95,8 @@ Rails.application.configure do
       :domain => "appd6764188b5ba41fa832e9f4b490b6c88.mailgun.org",
       :user_name => "postmaster@appd6764188b5ba41fa832e9f4b490b6c88.mailgun.org",
       :password => "ebff1c5a5951216fb2f87547758cd627",
-      :authentication => :plain
-
+      :authentication => :plain,
+      :openssl_verify_mode => 'none'
   }
 
 end
