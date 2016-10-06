@@ -18,7 +18,7 @@ class UsersController < ApplicationController
     @user.Admin = false
     if @user.save
       flash[:success] = ("Registration successful " + @user.name)
-      if User.find(session[:user_id]).Admin
+      if user_logged_in? and User.find(session[:user_id]).Admin
         redirect_to admin_manage_user_path
       else
         logging_in(@user.id)
