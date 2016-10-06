@@ -52,20 +52,20 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.perform_deliveries = true
-  config.action_mailer.delivery_method = :smtp
-
-  config.action_mailer.smtp_settings = {
-      :enable_starttls_auto => true,
-      :address => "smtp.gmail.com",
-      :port => 587,
-      :domain => "gmail.com",
-      :user_name => "librarybookingapp@gmail.com",
-      :password => "root@123",
-      :authentication => :plain
-
-  }
+  # config.action_mailer.raise_delivery_errors = true
+  # config.action_mailer.perform_deliveries = true
+  # config.action_mailer.delivery_method = :smtp
+  #
+  # config.action_mailer.smtp_settings = {
+  #     :enable_starttls_auto => true,
+  #     :address => "smtp.mailgun.org",
+  #     :port => 587,
+  #     :domain => "sandbox62230d134e334f2c9859ed3c3dde8ddc.mailgun.org",
+  #     :user_name => "postmaster@sandbox62230d134e334f2c9859ed3c3dde8ddc.mailgun.org",
+  #     :password => "eb4e6cbbec84adc15a9cf51f5aacd496",
+  #     :authentication => :plain,
+  #     :openssl_verify_mode => 'none'
+  # }
 
 
 end
