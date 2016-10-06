@@ -12,8 +12,11 @@ id, roomid, building, size
 
 rails generate scaffold room room_id:string building:string size:string
 
+------------------------------------------------------------------------------
 
 
+
+heroku git:clone -a librarybooking
 
 ------------------------------------------------------------------------------
 
